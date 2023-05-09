@@ -27,15 +27,13 @@ function App() {
           itemPaddingX={50}
           alignItems="center"
           containerPaddingX={100}
-          containerMinWidth={350}
-          containerMaxWidth={1500}
           autoSlide={false}
           autoSlideInterval={3000}
           draggable={true}
           color="firebrick"
           navSize={40}
           navOpacity={0.8}
-          pagination={true}
+          pagination={false}
           clickablePagination={true}
         >
           <div style={{ height: "100px", backgroundColor: "red" }}>{0}</div>
@@ -43,12 +41,10 @@ function App() {
           <div style={{ height: "100px", backgroundColor: "red" }}>{2}</div>
           <div style={{ height: "100px", backgroundColor: "red" }}>{3}</div>
           <div style={{ height: "100px", backgroundColor: "red" }}>{4}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{5}</div>
-          <div>{6}</div>
-          <div>{7}</div>
-          <div>{8}</div>
-          <div>{9}</div>
-          <div>{10}</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>{6}</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>{7}</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>{8}</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>{9}</div>
         </Slide>
       </div>
     </div>

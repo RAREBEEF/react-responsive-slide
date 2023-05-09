@@ -18,17 +18,17 @@ import { useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import SlideItem from "./SlideItem";
 import styled from "styled-components";
 var Slide = function (_a) {
-    var children = _a.children, responsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, containerMinWidth = _a.containerMinWidth, containerMaxWidth = _a.containerMaxWidth, _f = _a.autoSlide, autoSlide = _f === void 0 ? false : _f, _g = _a.autoSlideInterval, autoSlideInterval = _g === void 0 ? 3000 : _g, _h = _a.draggable, draggable = _h === void 0 ? true : _h, slideContainer = _a.slideContainer, color = _a.color, _j = _a.navSize, navSize = _j === void 0 ? 40 : _j, _k = _a.pagination, pagination = _k === void 0 ? true : _k, _l = _a.clickablePagination, clickablePagination = _l === void 0 ? true : _l;
+    var children = _a.children, responsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, _f = _a.autoSlide, autoSlide = _f === void 0 ? false : _f, _g = _a.autoSlideInterval, autoSlideInterval = _g === void 0 ? 3000 : _g, _h = _a.draggable, draggable = _h === void 0 ? true : _h, slideContainer = _a.slideContainer, _j = _a.color, color = _j === void 0 ? "gray" : _j, _k = _a.navSize, navSize = _k === void 0 ? 40 : _k, _l = _a.navOpacity, navOpacity = _l === void 0 ? 1 : _l, _m = _a.pagination, pagination = _m === void 0 ? true : _m, _o = _a.clickablePagination, clickablePagination = _o === void 0 ? true : _o;
     var itemCount = useMemo(function () { return children.length; }, [children.length]);
     var slideRef = useRef(null);
-    var _m = useState(autoSlide), activeAutoSlide = _m[0], setActiveAutoSlide = _m[1];
-    var _o = useState(false), dragging = _o[0], setDragging = _o[1];
-    var _p = useState(false), blockLink = _p[0], setBlockLink = _p[1];
-    var _q = useState(0), slidePage = _q[0], setSlidePage = _q[1];
-    var _r = useState(200), slideItemWidth = _r[0], setSlideItemWidth = _r[1];
-    var _s = useState(Math.ceil(children.length / defaultItemsPerPage)), itemsPerPage = _s[0], setItemsPerPage = _s[1];
-    var _t = useState(3), maxPage = _t[0], setMaxPage = _t[1];
-    var _u = useState(null), container = _u[0], setContainer = _u[1];
+    var _p = useState(autoSlide), activeAutoSlide = _p[0], setActiveAutoSlide = _p[1];
+    var _q = useState(false), dragging = _q[0], setDragging = _q[1];
+    var _r = useState(false), blockLink = _r[0], setBlockLink = _r[1];
+    var _s = useState(0), slidePage = _s[0], setSlidePage = _s[1];
+    var _t = useState(200), slideItemWidth = _t[0], setSlideItemWidth = _t[1];
+    var _u = useState(Math.ceil(children.length / defaultItemsPerPage)), itemsPerPage = _u[0], setItemsPerPage = _u[1];
+    var _v = useState(3), maxPage = _v[0], setMaxPage = _v[1];
+    var _w = useState(null), container = _w[0], setContainer = _w[1];
     var isHTMLElementRef = function (ref) {
         return ref.current !== undefined;
     };
@@ -61,7 +61,7 @@ var Slide = function (_a) {
         var _loop_1 = function (i) {
             dots.push(_jsx("div", { className: "dot", style: {
                     cursor: clickablePagination ? "pointer" : "default",
-                    backgroundColor: color || "gray",
+                    backgroundColor: color,
                     opacity: i === slidePage ? 1 : 0.3,
                 }, onClick: clickablePagination
                     ? function () {
@@ -92,15 +92,38 @@ var Slide = function (_a) {
             var containerWidth = container.clientWidth;
             var padding = containerPaddingX * 2;
             if (!responsives) {
-                setSlidePage(0);
-                setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
-                setItemsPerPage(defaultItemsPerPage);
-                setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
-                return;
+                if (containerWidth >= 1440) {
+                    var itemsPerPage_1 = Math.min(5, Math.ceil(children.length / 2));
+                    setSlidePage(0);
+                    setMaxPage(Math.ceil(children.length / itemsPerPage_1));
+                    setItemsPerPage(itemsPerPage_1);
+                    setSlideItemWidth((containerWidth - padding) / itemsPerPage_1);
+                }
+                else if (containerWidth <= 500) {
+                    var itemsPerPage_2 = 1;
+                    setSlidePage(0);
+                    setMaxPage(children.length / itemsPerPage_2);
+                    setItemsPerPage(itemsPerPage_2);
+                    setSlideItemWidth(containerWidth - padding);
+                }
+                else if (containerWidth <= 1024) {
+                    var itemsPerPage_3 = Math.min(3, Math.ceil(children.length / 4));
+                    setSlidePage(0);
+                    setMaxPage(Math.ceil(children.length / itemsPerPage_3));
+                    setItemsPerPage(itemsPerPage_3);
+                    setSlideItemWidth((containerWidth - padding) / itemsPerPage_3);
+                }
+                else if (containerWidth <= 1439) {
+                    var itemsPerPage_4 = Math.min(4, Math.ceil(children.length / 3));
+                    setSlidePage(0);
+                    setMaxPage(Math.ceil(children.length / itemsPerPage_4));
+                    setItemsPerPage(itemsPerPage_4);
+                    setSlideItemWidth((containerWidth - padding) / itemsPerPage_4);
+                }
             }
             else {
                 for (var i = 0; i < responsives.length; i++) {
-                    var _a = responsives[i], _b = _a.range, from = _b.from, to = _b.to, itemsPerPage_1 = _a.itemsPerPage;
+                    var _a = responsives[i], _b = _a.range, from = _b.from, to = _b.to, itemsPerPage_5 = _a.itemsPerPage;
                     if (!from && !to) {
                         continue;
                     }
@@ -108,9 +131,9 @@ var Slide = function (_a) {
                         // ~~ to
                         if (containerWidth <= to) {
                             setSlidePage(0);
-                            setMaxPage(Math.ceil(itemCount / itemsPerPage_1));
-                            setItemsPerPage(itemsPerPage_1);
-                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_1);
+                            setMaxPage(Math.ceil(itemCount / itemsPerPage_5));
+                            setItemsPerPage(itemsPerPage_5);
+                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_5);
                             break;
                         }
                         else if (i === responsives.length - 1) {
@@ -127,9 +150,9 @@ var Slide = function (_a) {
                     else if (!!from && !to) {
                         if (containerWidth >= from) {
                             setSlidePage(0);
-                            setMaxPage(Math.ceil(itemCount / itemsPerPage_1));
-                            setItemsPerPage(itemsPerPage_1);
-                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_1);
+                            setMaxPage(Math.ceil(itemCount / itemsPerPage_5));
+                            setItemsPerPage(itemsPerPage_5);
+                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_5);
                             break;
                         }
                         else if (i === responsives.length - 1) {
@@ -146,11 +169,11 @@ var Slide = function (_a) {
                     else if (!!to && !!from) {
                         if (containerWidth <= to && containerWidth >= from) {
                             console.log(containerWidth);
-                            console.log((containerWidth - padding) / itemsPerPage_1);
+                            console.log((containerWidth - padding) / itemsPerPage_5);
                             setSlidePage(0);
-                            setMaxPage(Math.ceil(itemCount / itemsPerPage_1));
-                            setItemsPerPage(itemsPerPage_1);
-                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_1);
+                            setMaxPage(Math.ceil(itemCount / itemsPerPage_5));
+                            setItemsPerPage(itemsPerPage_5);
+                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_5);
                             break;
                         }
                         else {
@@ -174,13 +197,12 @@ var Slide = function (_a) {
             window.removeEventListener("resize", calcSlideItemWidth);
         };
     }, [
-        containerMaxWidth,
-        containerMinWidth,
         containerPaddingX,
         container,
         defaultItemsPerPage,
         itemCount,
         responsives,
+        children.length,
     ]);
     useEffect(function () {
         moveSlide();
@@ -282,18 +304,19 @@ var Slide = function (_a) {
         };
     }, [activeAutoSlide, autoSlide, autoSlideInterval, maxPage]);
     return (_jsx(StyledSlide, { children: _jsxs("div", __assign({ className: "slide", style: {
-                maxWidth: "".concat(containerMaxWidth, "px"),
-                marginBottom: pagination ? "40px" : "",
-            } }, { children: [_jsxs("div", __assign({ className: "navigation" }, { children: [_jsx("button", __assign({ onClick: onPrevClick, style: {
+            // marginBottom: pagination ? "40px" : "",
+            } }, { children: [_jsxs("div", __assign({ className: "navigation", style: {
+                        translate: pagination ? "0px -8px" : "none",
+                    } }, { children: [_jsx("button", __assign({ onClick: onPrevClick, style: {
                                 width: "".concat(navSize, "px"),
                                 height: "".concat(navSize, "px"),
-                                // translate: `-${navSize / 3}px`,
+                                opacity: navOpacity,
                             } }, { children: _jsx("svg", __assign({ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 300 300", style: {
                                     stroke: color,
                                 } }, { children: _jsx("polyline", { points: "221.98 32.98 78.02 150 221.98 267.02" }) })) })), _jsx("button", __assign({ onClick: onNextClick, style: {
                                 width: "".concat(navSize, "px"),
                                 height: "".concat(navSize, "px"),
-                                // translate: `${navSize / 3}px`,
+                                opacity: navOpacity,
                             } }, { children: _jsx("svg", __assign({ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 300 300", style: {
                                     stroke: color,
                                 } }, { children: _jsx("polyline", { points: "78.79 267.02 222.75 150 78.79 32.98" }) })) }))] })), _jsx("ul", __assign({ ref: slideRef, className: "slider", style: {
@@ -302,10 +325,11 @@ var Slide = function (_a) {
                         paddingRight: "".concat(containerPaddingX, "px"),
                         alignItems: alignItems,
                         transition: !dragging ? "all 0.5s" : "none",
+                        marginBottom: pagination ? "32px" : "",
                     } }, { children: children.map(function (child, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX }, { children: _jsx("li", __assign({ style: {
                                 pointerEvents: blockLink ? "none" : "all",
                             } }, { children: child })) }), i)); }) })), pagination && (_jsx("div", __assign({ className: "pagination" }, { children: paginationGenerator() })))] })) }));
 };
-var StyledSlide = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  * {\n    box-sizing: border-box;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    background-color: white;\n    box-shadow: 1px 1px 5px gray;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    stroke: gray;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.3;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    top: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 100%;\n  }\n"], ["\n  * {\n    box-sizing: border-box;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    background-color: white;\n    box-shadow: 1px 1px 5px gray;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    stroke: gray;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.3;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    top: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 100%;\n  }\n"])));
+var StyledSlide = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    background-color: white;\n    box-shadow: 1px 1px 5px gray;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.3;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 100%;\n  }\n"], ["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    background-color: white;\n    box-shadow: 1px 1px 5px gray;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.3;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 100%;\n  }\n"])));
 export default Slide;
 var templateObject_1;

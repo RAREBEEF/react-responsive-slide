@@ -21,10 +21,6 @@ interface SlideProps {
     alignItems?: "center" | "start" | "end";
     /**컨테이너 좌우 여백*/
     containerPaddingX?: number;
-    /**컨테이너 최소 너비*/
-    containerMinWidth?: number;
-    /**컨테이너 최대 너비*/
-    containerMaxWidth?: number;
     /**자동 슬라이드*/
     autoSlide?: boolean;
     /**자동 슬라이드 간격*/
@@ -35,6 +31,8 @@ interface SlideProps {
     color?: string;
     /**네비게이션 크기*/
     navSize?: number;
+    /**네비게이션 투명도*/
+    navOpacity?: number;
     /**페이지네이션 여부*/
     pagination?: boolean;
     /**페이지네이션 클릭 여부*/

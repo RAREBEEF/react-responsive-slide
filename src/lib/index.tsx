@@ -29,10 +29,6 @@ interface SlideProps {
   alignItems?: "center" | "start" | "end";
   /**컨테이너 좌우 여백*/
   containerPaddingX?: number;
-  /**컨테이너 최소 너비*/
-  containerMinWidth?: number;
-  /**컨테이너 최대 너비*/
-  containerMaxWidth?: number;
   /**자동 슬라이드*/
   autoSlide?: boolean;
   /**자동 슬라이드 간격*/
@@ -58,13 +54,11 @@ const Slide: React.FC<SlideProps> = ({
   itemPaddingX = 12,
   alignItems = "center",
   containerPaddingX = 55,
-  containerMinWidth,
-  containerMaxWidth,
   autoSlide = false,
   autoSlideInterval = 3000,
   draggable = true,
   slideContainer,
-  color,
+  color = "gray",
   navSize = 40,
   navOpacity = 1,
   pagination = true,
@@ -125,7 +119,7 @@ const Slide: React.FC<SlideProps> = ({
           className="dot"
           style={{
             cursor: clickablePagination ? "pointer" : "default",
-            backgroundColor: color || "gray",
+            backgroundColor: color,
             opacity: i === slidePage ? 1 : 0.3,
           }}
           onClick={
@@ -162,11 +156,31 @@ const Slide: React.FC<SlideProps> = ({
       const padding = containerPaddingX * 2;
 
       if (!responsives) {
-        setSlidePage(0);
-        setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
-        setItemsPerPage(defaultItemsPerPage);
-        setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
-        return;
+        if (containerWidth >= 1440) {
+          const itemsPerPage = Math.min(5, Math.ceil(children.length / 2));
+          setSlidePage(0);
+          setMaxPage(Math.ceil(children.length / itemsPerPage));
+          setItemsPerPage(itemsPerPage);
+          setSlideItemWidth((containerWidth - padding) / itemsPerPage);
+        } else if (containerWidth <= 500) {
+          const itemsPerPage = 1;
+          setSlidePage(0);
+          setMaxPage(children.length / itemsPerPage);
+          setItemsPerPage(itemsPerPage);
+          setSlideItemWidth(containerWidth - padding);
+        } else if (containerWidth <= 1024) {
+          const itemsPerPage = Math.min(3, Math.ceil(children.length / 4));
+          setSlidePage(0);
+          setMaxPage(Math.ceil(children.length / itemsPerPage));
+          setItemsPerPage(itemsPerPage);
+          setSlideItemWidth((containerWidth - padding) / itemsPerPage);
+        } else if (containerWidth <= 1439) {
+          const itemsPerPage = Math.min(4, Math.ceil(children.length / 3));
+          setSlidePage(0);
+          setMaxPage(Math.ceil(children.length / itemsPerPage));
+          setItemsPerPage(itemsPerPage);
+          setSlideItemWidth((containerWidth - padding) / itemsPerPage);
+        }
       } else {
         for (let i = 0; i < responsives.length; i++) {
           const {
@@ -247,13 +261,12 @@ const Slide: React.FC<SlideProps> = ({
       window.removeEventListener("resize", calcSlideItemWidth);
     };
   }, [
-    containerMaxWidth,
-    containerMinWidth,
     containerPaddingX,
     container,
     defaultItemsPerPage,
     itemCount,
     responsives,
+    children.length,
   ]);
 
   useEffect(() => {
@@ -376,12 +389,18 @@ const Slide: React.FC<SlideProps> = ({
     <StyledSlide>
       <div
         className="slide"
-        style={{
-          maxWidth: `${containerMaxWidth}px`,
-          marginBottom: pagination ? "40px" : "",
-        }}
+        style={
+          {
+            // marginBottom: pagination ? "40px" : "",
+          }
+        }
       >
-        <div className="navigation">
+        <div
+          className="navigation"
+          style={{
+            translate: pagination ? "0px -8px" : "none",
+          }}
+        >
           <button
             onClick={onPrevClick}
             style={{
@@ -428,6 +447,7 @@ const Slide: React.FC<SlideProps> = ({
             paddingRight: `${containerPaddingX}px`,
             alignItems,
             transition: !dragging ? "all 0.5s" : "none",
+            marginBottom: pagination ? "32px" : "",
           }}
         >
           {children.map((child, i) => (
@@ -457,6 +477,12 @@ const Slide: React.FC<SlideProps> = ({
 const StyledSlide = styled.div`
   * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    display: block;
   }
 
   .slide {
@@ -477,7 +503,6 @@ const StyledSlide = styled.div`
     left: 0;
     top: 0;
     bottom: 0;
-    translate: 0px -8px;
     display: flex;
     justify-content: space-between;
   }
@@ -497,7 +522,6 @@ const StyledSlide = styled.div`
   }
   .slide > .navigation > button > svg {
     width: 100%;
-    stroke: gray;
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
@@ -529,7 +553,6 @@ const StyledSlide = styled.div`
     width: fit-content;
     display: flex;
     list-style: none;
-    margin-bottom: 32px;
   }
 
   .slide > .pagination {

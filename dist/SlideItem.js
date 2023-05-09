@@ -23,6 +23,6 @@ var SlideItem = function (_a) {
                 paddingRight: "".concat(paddingX, "px"),
             } }, { children: children })) }));
 };
-var StyledSlideItem = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  * {\n    box-sizing: border-box;\n  }\n\n  .slide-item {\n    position: relative;\n    height: 100%;\n  }\n"], ["\n  * {\n    box-sizing: border-box;\n  }\n\n  .slide-item {\n    position: relative;\n    height: 100%;\n  }\n"])));
+var StyledSlideItem = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide-item {\n    position: relative;\n    height: 100%;\n  }\n"], ["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide-item {\n    position: relative;\n    height: 100%;\n  }\n"])));
 export default SlideItem;
 var templateObject_1;
