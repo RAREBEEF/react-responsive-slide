@@ -1,46 +1,91 @@
-# Getting Started with Create React App
+# Installation
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+`npm i react-responsive-slide`
 
-## Available Scripts
+</br>
+</br>
 
-In the project directory, you can run:
+# Params
 
-### `npm start`
+```ts
+/**
+ * @param slideContainer
+ * @param responsives
+ * @param defaultItemsPerPage
+ * @param itemPaddingX
+ * @param alignItems
+ * @param containerPaddingX
+ * @param containerMinWidth
+ * @param containerMaxWidth
+ * @param autoSlide
+ * @param autoSlideInterval
+ * @param draggable
+ * @param color
+ * @param navSize
+ * @param pagination
+ * @param clickablePagination
+ */
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Example
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```ts
+// style unit = px
+// time unit = ms
 
-### `npm test`
+import { useRef } from "react";
+import Slider from "../src/Slider";
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+function App() {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-### `npm run build`
+  return (
+    <section>
+      <div
+        ref={containerRef}
+        s
+        className="App"
+        style={{
+          width: "90vw",
+          margin: "auto",
+          maxWidth: "1500px",
+          minWidth: "350px",
+        }}
+      >
+        <Slider
+          slideContainer={containerRef}
+          responsives={[
+            { range: { from: null, to: 500 }, itemsPerPage: 1 },
+            { range: { from: 501, to: 900 }, itemsPerPage: 3 },
+            { range: { from: 901, to: 1300 }, itemsPerPage: 4 },
+            { range: { from: 1301, to: null }, itemsPerPage: 5 },
+          ]}
+          defaultItemsPerPage={2}
+          itemPaddingX={20}
+          alignItems="center"
+          containerPaddingX={50}
+          containerMinWidth={350}
+          containerMaxWidth={1500}
+          autoSlide={true}
+          autoSlideInterval={3000}
+          draggable={true}
+          color="firebrick"
+          navSize={40}
+          pagination={true}
+          clickablePagination={true}
+        >
+          <div>Hello</div>
+          <div>RARE</div>
+          <div>BEEF</div>
+          <div>Nice</div>
+          <div>To</div>
+          <div>Meet</div>
+          <div>You</div>
+        </Slider>
+      </div>
+    </section>
+  );
+}
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+export default App;
+```
