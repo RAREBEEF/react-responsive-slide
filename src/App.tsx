@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import Slide from "./lib";
+import Slide from "./lib/Slide";
 
 function App() {
   const containerRef = useRef<HTMLDivElement>(null);

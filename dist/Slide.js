@@ -18,17 +18,17 @@ import { useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import SlideItem from "./SlideItem";
 import styled from "styled-components";
 var Slide = function (_a) {
-    var children = _a.children, responsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, _f = _a.autoSlide, autoSlide = _f === void 0 ? false : _f, _g = _a.autoSlideInterval, autoSlideInterval = _g === void 0 ? 3000 : _g, _h = _a.draggable, draggable = _h === void 0 ? true : _h, slideContainer = _a.slideContainer, _j = _a.color, color = _j === void 0 ? "gray" : _j, _k = _a.navSize, navSize = _k === void 0 ? 40 : _k, _l = _a.navOpacity, navOpacity = _l === void 0 ? 1 : _l, _m = _a.pagination, pagination = _m === void 0 ? true : _m, _o = _a.clickablePagination, clickablePagination = _o === void 0 ? true : _o;
+    var children = _a.children, responsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, _f = _a.containerPaddingY, containerPaddingY = _f === void 0 ? 20 : _f, _g = _a.autoSlide, autoSlide = _g === void 0 ? false : _g, _h = _a.autoSlideInterval, autoSlideInterval = _h === void 0 ? 3000 : _h, _j = _a.draggable, draggable = _j === void 0 ? true : _j, slideContainer = _a.slideContainer, _k = _a.color, color = _k === void 0 ? "gray" : _k, _l = _a.navSize, navSize = _l === void 0 ? 40 : _l, _m = _a.navOpacity, navOpacity = _m === void 0 ? 1 : _m, _o = _a.pagination, pagination = _o === void 0 ? true : _o, _p = _a.clickablePagination, clickablePagination = _p === void 0 ? true : _p;
     var itemCount = useMemo(function () { return children.length; }, [children.length]);
     var slideRef = useRef(null);
-    var _p = useState(autoSlide), activeAutoSlide = _p[0], setActiveAutoSlide = _p[1];
-    var _q = useState(false), dragging = _q[0], setDragging = _q[1];
-    var _r = useState(false), blockLink = _r[0], setBlockLink = _r[1];
-    var _s = useState(0), slidePage = _s[0], setSlidePage = _s[1];
-    var _t = useState(200), slideItemWidth = _t[0], setSlideItemWidth = _t[1];
-    var _u = useState(Math.ceil(children.length / defaultItemsPerPage)), itemsPerPage = _u[0], setItemsPerPage = _u[1];
-    var _v = useState(3), maxPage = _v[0], setMaxPage = _v[1];
-    var _w = useState(null), container = _w[0], setContainer = _w[1];
+    var _q = useState(autoSlide), activeAutoSlide = _q[0], setActiveAutoSlide = _q[1];
+    var _r = useState(false), dragging = _r[0], setDragging = _r[1];
+    var _s = useState(false), blockLink = _s[0], setBlockLink = _s[1];
+    var _t = useState(0), slidePage = _t[0], setSlidePage = _t[1];
+    var _u = useState(200), slideItemWidth = _u[0], setSlideItemWidth = _u[1];
+    var _v = useState(Math.ceil(children.length / defaultItemsPerPage)), itemsPerPage = _v[0], setItemsPerPage = _v[1];
+    var _w = useState(3), maxPage = _w[0], setMaxPage = _w[1];
+    var _x = useState(null), container = _x[0], setContainer = _x[1];
     var isHTMLElementRef = function (ref) {
         return ref.current !== undefined;
     };
@@ -303,9 +303,7 @@ var Slide = function (_a) {
             clearInterval(automaticSlide);
         };
     }, [activeAutoSlide, autoSlide, autoSlideInterval, maxPage]);
-    return (_jsx(StyledSlide, { children: _jsxs("div", __assign({ className: "slide", style: {
-            // marginBottom: pagination ? "40px" : "",
-            } }, { children: [_jsxs("div", __assign({ className: "navigation", style: {
+    return (_jsx(StyledSlide, { children: _jsxs("div", __assign({ className: "slide" }, { children: [_jsxs("div", __assign({ className: "navigation", style: {
                         translate: pagination ? "0px -8px" : "none",
                     } }, { children: [_jsx("button", __assign({ onClick: onPrevClick, style: {
                                 width: "".concat(navSize, "px"),
@@ -323,6 +321,8 @@ var Slide = function (_a) {
                         cursor: blockLink ? "grabbing" : "default",
                         paddingLeft: "".concat(containerPaddingX, "px"),
                         paddingRight: "".concat(containerPaddingX, "px"),
+                        paddingTop: "".concat(containerPaddingY, "px"),
+                        paddingBottom: "".concat(containerPaddingY, "px"),
                         alignItems: alignItems,
                         transition: !dragging ? "all 0.5s" : "none",
                         marginBottom: pagination ? "32px" : "",

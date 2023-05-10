@@ -21,6 +21,8 @@ interface SlideProps {
     alignItems?: "center" | "start" | "end";
     /**컨테이너 좌우 여백*/
     containerPaddingX?: number;
+    /**컨테이너 좌우 여백*/
+    containerPaddingY?: number;
     /**자동 슬라이드*/
     autoSlide?: boolean;
     /**자동 슬라이드 간격*/

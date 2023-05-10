@@ -1,6 +1,6 @@
 {
   "name": "react-responsive-slide",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": false,
   "description": "Responsive draggable slider for React app.",
   "keywords": [
@@ -20,8 +20,8 @@
     "type": "git",
     "url": "https://github.com/RAREBEEF/react-responsive-slide"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/Slide.js",
+  "types": "dist/Slide.d.ts",
   "browser": "./browser/specific/main.js",
   "dependencies": {
     "@types/node": "^16.18.27",

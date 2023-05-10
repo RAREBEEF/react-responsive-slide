@@ -29,6 +29,8 @@ interface SlideProps {
   alignItems?: "center" | "start" | "end";
   /**컨테이너 좌우 여백*/
   containerPaddingX?: number;
+  /**컨테이너 좌우 여백*/
+  containerPaddingY?: number;
   /**자동 슬라이드*/
   autoSlide?: boolean;
   /**자동 슬라이드 간격*/
@@ -54,6 +56,7 @@ const Slide: React.FC<SlideProps> = ({
   itemPaddingX = 12,
   alignItems = "center",
   containerPaddingX = 55,
+  containerPaddingY = 20,
   autoSlide = false,
   autoSlideInterval = 3000,
   draggable = true,
@@ -387,14 +390,7 @@ const Slide: React.FC<SlideProps> = ({
 
   return (
     <StyledSlide>
-      <div
-        className="slide"
-        style={
-          {
-            // marginBottom: pagination ? "40px" : "",
-          }
-        }
-      >
+      <div className="slide">
         <div
           className="navigation"
           style={{
@@ -445,6 +441,8 @@ const Slide: React.FC<SlideProps> = ({
             cursor: blockLink ? "grabbing" : "default",
             paddingLeft: `${containerPaddingX}px`,
             paddingRight: `${containerPaddingX}px`,
+            paddingTop: `${containerPaddingY}px`,
+            paddingBottom: `${containerPaddingY}px`,
             alignItems,
             transition: !dragging ? "all 0.5s" : "none",
             marginBottom: pagination ? "32px" : "",
