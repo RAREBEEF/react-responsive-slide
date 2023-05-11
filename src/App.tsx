@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import Slide from "./lib/Slide";
+import "./App.css";
 
 function App() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -47,7 +48,12 @@ function App() {
           >
             {0}
           </div>
-          <div style={{ height: "300px", backgroundColor: "red" }}>{1}</div>
+          <div
+            className="item"
+            style={{ height: "300px", backgroundColor: "red" }}
+          >
+            {1}
+          </div>
           <div style={{ height: "300px", backgroundColor: "red" }}>{2}</div>
           <div style={{ height: "300px", backgroundColor: "red" }}>{2}</div>
           <div style={{ height: "300px", backgroundColor: "red" }}>{2}</div>

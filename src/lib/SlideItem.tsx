@@ -15,7 +15,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
   return (
     <StyledSlideItem>
       <div
-        className="slide-item-aZdigdeg"
+        className="slide-item"
         style={{
           width: `${slideItemWidth}px`,
           paddingLeft: `${paddingX}px`,
@@ -29,7 +29,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
 };
 
 const StyledSlideItem = styled.div`
-  .slide-item-aZdigdeg {
+  .slide-item {
     position: relative;
     height: 100%;
     box-sizing: border-box;

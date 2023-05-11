@@ -543,7 +543,13 @@ const Slide: React.FC<SlideProps> = ({
 };
 
 const StyledSlide = styled.div`
-  * {
+  .slide,
+  .slide > .navigation,
+  .slide > .navigation > button,
+  .slide > .navigation > button > svg,
+  .slide > .slider,
+  .slide > .pagination,
+  .slide > .pagination > .dot {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
