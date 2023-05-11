@@ -161,16 +161,16 @@ const Slide: React.FC<SlideProps> = ({
         defaultResponsives.push(
           {
             range: { from: 601, to: 800 },
-            itemsPerPage: Math.min(2, Math.ceil(children.length / 5)),
+            itemsPerPage: Math.min(2, Math.ceil(children.length / 4)),
           },
 
           {
             range: { from: 801, to: 1280 },
-            itemsPerPage: Math.min(3, Math.ceil(children.length / 4)),
+            itemsPerPage: Math.min(3, Math.ceil(children.length / 3)),
           },
           {
             range: { from: 1281, to: 1500 },
-            itemsPerPage: Math.min(4, Math.ceil(children.length / 3)),
+            itemsPerPage: Math.min(4, Math.ceil(children.length / 2)),
           }
         );
       }
