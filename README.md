@@ -187,6 +187,15 @@ color = "gray";
 navSize={40};
 ```
 
+### **11. `navBackground`**
+
+네비게이션 버튼의 배경 색상을 설정합니다. css Background 값으로 사용됩니다. `none` 으로 배경을 없앨 수 있습니다.  
+기본값은 `white` 입니다.
+
+```ts
+navBackground = "white";
+```
+
 ### **12. `pagination`**
 
 페이지네이션을 표시할지 여부를 결정합니다.
@@ -246,6 +255,7 @@ function App() {
           draggable={true}
           color="firebrick"
           navSize={40}
+          navBackground="white"
           navOpacity={0.8}
           pagination={true}
           clickablePagination={true}
