@@ -17,18 +17,21 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import SlideItem from "./SlideItem";
 import styled from "styled-components";
+import _ from "lodash";
 var Slide = function (_a) {
-    var children = _a.children, responsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, _f = _a.containerPaddingY, containerPaddingY = _f === void 0 ? 20 : _f, _g = _a.autoSlide, autoSlide = _g === void 0 ? false : _g, _h = _a.autoSlideInterval, autoSlideInterval = _h === void 0 ? 3000 : _h, _j = _a.draggable, draggable = _j === void 0 ? true : _j, slideContainer = _a.slideContainer, _k = _a.color, color = _k === void 0 ? "gray" : _k, _l = _a.navSize, navSize = _l === void 0 ? 40 : _l, _m = _a.navOpacity, navOpacity = _m === void 0 ? 1 : _m, _o = _a.pagination, pagination = _o === void 0 ? true : _o, _p = _a.clickablePagination, clickablePagination = _p === void 0 ? true : _p;
+    var children = _a.children, customResponsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, _f = _a.containerPaddingY, containerPaddingY = _f === void 0 ? 20 : _f, _g = _a.autoSlide, autoSlide = _g === void 0 ? false : _g, _h = _a.autoSlideInterval, autoSlideInterval = _h === void 0 ? 3000 : _h, _j = _a.draggable, draggable = _j === void 0 ? true : _j, slideContainer = _a.slideContainer, _k = _a.color, color = _k === void 0 ? "gray" : _k, _l = _a.navSize, navSize = _l === void 0 ? 40 : _l, _m = _a.navBackground, navBackground = _m === void 0 ? "white" : _m, _o = _a.navOpacity, navOpacity = _o === void 0 ? 1 : _o, _p = _a.pagination, pagination = _p === void 0 ? true : _p, _q = _a.clickablePagination, clickablePagination = _q === void 0 ? true : _q;
     var itemCount = useMemo(function () { return children.length; }, [children.length]);
     var slideRef = useRef(null);
-    var _q = useState(autoSlide), activeAutoSlide = _q[0], setActiveAutoSlide = _q[1];
-    var _r = useState(false), dragging = _r[0], setDragging = _r[1];
-    var _s = useState(false), blockLink = _s[0], setBlockLink = _s[1];
-    var _t = useState(0), slidePage = _t[0], setSlidePage = _t[1];
-    var _u = useState(200), slideItemWidth = _u[0], setSlideItemWidth = _u[1];
-    var _v = useState(Math.ceil(children.length / defaultItemsPerPage)), itemsPerPage = _v[0], setItemsPerPage = _v[1];
-    var _w = useState(3), maxPage = _w[0], setMaxPage = _w[1];
-    var _x = useState(null), container = _x[0], setContainer = _x[1];
+    var _r = useState(autoSlide), activeAutoSlide = _r[0], setActiveAutoSlide = _r[1];
+    var _s = useState(false), dragging = _s[0], setDragging = _s[1];
+    var _t = useState(false), blockLink = _t[0], setBlockLink = _t[1];
+    var _u = useState(0), slidePage = _u[0], setSlidePage = _u[1];
+    var _v = useState(200), slideItemWidth = _v[0], setSlideItemWidth = _v[1];
+    var _w = useState(Math.ceil(children.length / defaultItemsPerPage)), itemsPerPage = _w[0], setItemsPerPage = _w[1];
+    var _x = useState(3), maxPage = _x[0], setMaxPage = _x[1];
+    var _y = useState(null), container = _y[0], setContainer = _y[1];
+    var _z = useState(customResponsives), responsives = _z[0], setResponsives = _z[1];
+    // 컨테이너 체크
     var isHTMLElementRef = function (ref) {
         return ref.current !== undefined;
     };
@@ -40,6 +43,18 @@ var Slide = function (_a) {
             setContainer(slideContainer);
         }
     }, [slideContainer]);
+    // 페이지 이동
+    var moveSlide = useCallback(function () {
+        setBlockLink(false);
+        if (!slideRef.current)
+            return;
+        var slide = slideRef.current;
+        var moveX = -slideItemWidth * itemsPerPage * slidePage;
+        slide.style.transform = "translateX(".concat(moveX, "px)");
+    }, [slideItemWidth, slidePage, itemsPerPage]);
+    useEffect(function () {
+        moveSlide();
+    }, [moveSlide]);
     var increasePage = function () {
         setSlidePage(function (prev) { return (prev === maxPage - 1 ? 0 : prev + 1); });
     };
@@ -56,162 +71,116 @@ var Slide = function (_a) {
         setActiveAutoSlide(false);
         decreasePage();
     };
-    var paginationGenerator = useCallback(function () {
-        var dots = [];
-        var _loop_1 = function (i) {
-            dots.push(_jsx("div", { className: "dot", style: {
-                    cursor: clickablePagination ? "pointer" : "default",
-                    backgroundColor: color,
-                    opacity: i === slidePage ? 1 : 0.3,
-                }, onClick: clickablePagination
-                    ? function () {
-                        setSlidePage(i);
-                        setActiveAutoSlide(false);
-                    }
-                    : function () { } }, i));
-        };
-        for (var i = 0; i < maxPage; i++) {
-            _loop_1(i);
-        }
-        return dots;
-    }, [clickablePagination, color, maxPage, slidePage]);
-    // 페이지에 맞춰 슬라이드 이동
-    var moveSlide = useCallback(function () {
-        setBlockLink(false);
-        if (!slideRef.current)
-            return;
-        var slide = slideRef.current;
-        var moveX = -slideItemWidth * itemsPerPage * slidePage;
-        slide.style.transform = "translateX(".concat(moveX, "px)");
-    }, [slideItemWidth, slidePage, itemsPerPage]);
-    // 슬라이드 아이템 너비 계산
+    // 전달받은 responsives가 없을 경우 기본값 할당
     useEffect(function () {
-        var calcSlideItemWidth = function () {
-            if (!container)
-                return;
-            var containerWidth = container.clientWidth;
-            var padding = containerPaddingX * 2;
-            if (!responsives) {
-                if (containerWidth >= 1440) {
-                    var itemsPerPage_1 = Math.min(5, Math.ceil(children.length / 2));
+        if (!customResponsives) {
+            var defaultResponsives = [
+                { range: { from: 1501, to: null }, itemsPerPage: 5 },
+                { range: { from: null, to: 600 }, itemsPerPage: 1 },
+            ];
+            if (children.length > 4) {
+                defaultResponsives.push({
+                    range: { from: 601, to: 800 },
+                    itemsPerPage: Math.min(2, Math.ceil(children.length / 5)),
+                }, {
+                    range: { from: 801, to: 1280 },
+                    itemsPerPage: Math.min(3, Math.ceil(children.length / 4)),
+                }, {
+                    range: { from: 1281, to: 1500 },
+                    itemsPerPage: Math.min(4, Math.ceil(children.length / 3)),
+                });
+            }
+            setResponsives(defaultResponsives);
+        }
+    }, [
+        children.length,
+        container,
+        containerPaddingX,
+        defaultItemsPerPage,
+        customResponsives,
+    ]);
+    // 슬라이드 아이템 너비 계산
+    var calcSlideItemWidth = useCallback(function () {
+        if (!container || !responsives)
+            return;
+        var containerWidth = container.clientWidth;
+        var padding = containerPaddingX * 2;
+        for (var i = 0; i < responsives.length; i++) {
+            var _a = responsives[i], _b = _a.range, from = _b.from, to = _b.to, itemsPerPage_1 = _a.itemsPerPage;
+            if (!from && !to) {
+                continue;
+            }
+            else if (!!to && !from) {
+                // ~~ to
+                if (containerWidth <= to) {
                     setSlidePage(0);
-                    setMaxPage(Math.ceil(children.length / itemsPerPage_1));
+                    setMaxPage(Math.ceil(itemCount / itemsPerPage_1));
                     setItemsPerPage(itemsPerPage_1);
                     setSlideItemWidth((containerWidth - padding) / itemsPerPage_1);
+                    break;
                 }
-                else if (containerWidth <= 500) {
-                    var itemsPerPage_2 = 1;
+                else if (i === responsives.length - 1) {
                     setSlidePage(0);
-                    setMaxPage(children.length / itemsPerPage_2);
-                    setItemsPerPage(itemsPerPage_2);
-                    setSlideItemWidth(containerWidth - padding);
+                    setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
+                    setItemsPerPage(defaultItemsPerPage);
+                    setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
                 }
-                else if (containerWidth <= 1024) {
-                    var itemsPerPage_3 = Math.min(3, Math.ceil(children.length / 4));
-                    setSlidePage(0);
-                    setMaxPage(Math.ceil(children.length / itemsPerPage_3));
-                    setItemsPerPage(itemsPerPage_3);
-                    setSlideItemWidth((containerWidth - padding) / itemsPerPage_3);
+                else {
+                    continue;
                 }
-                else if (containerWidth <= 1439) {
-                    var itemsPerPage_4 = Math.min(4, Math.ceil(children.length / 3));
-                    setSlidePage(0);
-                    setMaxPage(Math.ceil(children.length / itemsPerPage_4));
-                    setItemsPerPage(itemsPerPage_4);
-                    setSlideItemWidth((containerWidth - padding) / itemsPerPage_4);
-                }
+                // from ~~
             }
-            else {
-                for (var i = 0; i < responsives.length; i++) {
-                    var _a = responsives[i], _b = _a.range, from = _b.from, to = _b.to, itemsPerPage_5 = _a.itemsPerPage;
-                    if (!from && !to) {
-                        continue;
-                    }
-                    else if (!!to && !from) {
-                        // ~~ to
-                        if (containerWidth <= to) {
-                            setSlidePage(0);
-                            setMaxPage(Math.ceil(itemCount / itemsPerPage_5));
-                            setItemsPerPage(itemsPerPage_5);
-                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_5);
-                            break;
-                        }
-                        else if (i === responsives.length - 1) {
-                            setSlidePage(0);
-                            setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
-                            setItemsPerPage(defaultItemsPerPage);
-                            setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
-                        }
-                        else {
-                            continue;
-                        }
-                        // from ~~
-                    }
-                    else if (!!from && !to) {
-                        if (containerWidth >= from) {
-                            setSlidePage(0);
-                            setMaxPage(Math.ceil(itemCount / itemsPerPage_5));
-                            setItemsPerPage(itemsPerPage_5);
-                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_5);
-                            break;
-                        }
-                        else if (i === responsives.length - 1) {
-                            setSlidePage(0);
-                            setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
-                            setItemsPerPage(defaultItemsPerPage);
-                            setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
-                        }
-                        else {
-                            continue;
-                        }
-                        // from ~ to
-                    }
-                    else if (!!to && !!from) {
-                        if (containerWidth <= to && containerWidth >= from) {
-                            console.log(containerWidth);
-                            console.log((containerWidth - padding) / itemsPerPage_5);
-                            setSlidePage(0);
-                            setMaxPage(Math.ceil(itemCount / itemsPerPage_5));
-                            setItemsPerPage(itemsPerPage_5);
-                            setSlideItemWidth((containerWidth - padding) / itemsPerPage_5);
-                            break;
-                        }
-                        else {
-                            if (i === responsives.length - 1) {
-                                setSlidePage(0);
-                                setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
-                                setItemsPerPage(defaultItemsPerPage);
-                                setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
-                                break;
-                            }
-                            else {
-                            }
-                        }
+            else if (!!from && !to) {
+                if (containerWidth >= from) {
+                    setSlidePage(0);
+                    setMaxPage(Math.ceil(itemCount / itemsPerPage_1));
+                    setItemsPerPage(itemsPerPage_1);
+                    setSlideItemWidth((containerWidth - padding) / itemsPerPage_1);
+                    break;
+                }
+                else if (i === responsives.length - 1) {
+                    setSlidePage(0);
+                    setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
+                    setItemsPerPage(defaultItemsPerPage);
+                    setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
+                }
+                else {
+                    continue;
+                }
+                // from ~ to
+            }
+            else if (!!to && !!from) {
+                if (containerWidth <= to && containerWidth >= from) {
+                    setSlidePage(0);
+                    setMaxPage(Math.ceil(itemCount / itemsPerPage_1));
+                    setItemsPerPage(itemsPerPage_1);
+                    setSlideItemWidth((containerWidth - padding) / itemsPerPage_1);
+                    break;
+                }
+                else {
+                    if (i === responsives.length - 1) {
+                        setSlidePage(0);
+                        setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
+                        setItemsPerPage(defaultItemsPerPage);
+                        setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
+                        break;
                     }
                 }
             }
-        };
-        calcSlideItemWidth();
-        window.addEventListener("resize", calcSlideItemWidth);
-        return function () {
-            window.removeEventListener("resize", calcSlideItemWidth);
-        };
+        }
     }, [
-        containerPaddingX,
         container,
-        defaultItemsPerPage,
-        itemCount,
         responsives,
-        children.length,
+        containerPaddingX,
+        itemCount,
+        defaultItemsPerPage,
     ]);
-    useEffect(function () {
-        moveSlide();
-    }, [moveSlide]);
     // 슬라이드 드래그
     useEffect(function () {
-        if (!slideRef.current || !draggable)
+        if (!slideRef.current || !draggable || !container)
             return;
         var slide = slideRef.current;
+        var containerWidth = container.clientWidth;
         var slideInitX = -slideItemWidth * itemsPerPage * slidePage;
         var touchStartX;
         var touchMoveX;
@@ -229,9 +198,13 @@ var Slide = function (_a) {
             if (e.cancelable)
                 e.preventDefault();
             setDragging(false);
-            var newPage = slidePage + Math.round(touchMoveX / -slideItemWidth);
-            setSlidePage(newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage);
-            moveSlide();
+            if (touchMoveX) {
+                var newPage = slidePage -
+                    Math.sign(touchMoveX) *
+                        (Math.abs(touchMoveX) >= containerWidth / 4 ? 1 : 0);
+                setSlidePage(newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage);
+                moveSlide();
+            }
             window.removeEventListener("touchmove", touchMoveHandler);
         };
         var touchStartHandler = function (e) {
@@ -262,7 +235,9 @@ var Slide = function (_a) {
                 e.preventDefault();
             setDragging(false);
             if (touchMoveX) {
-                var newPage = slidePage + Math.round(touchMoveX / -slideItemWidth);
+                var newPage = slidePage -
+                    Math.sign(touchMoveX) *
+                        (Math.abs(touchMoveX) >= containerWidth / 4 ? 1 : 0);
                 setSlidePage(newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage);
                 moveSlide();
             }
@@ -287,7 +262,24 @@ var Slide = function (_a) {
             window.removeEventListener("mousemove", mouseMoveHandler);
             window.removeEventListener("mouseup", mouseUpHandler);
         };
-    }, [maxPage, moveSlide, slideItemWidth, slidePage, draggable, itemsPerPage]);
+    }, [
+        maxPage,
+        moveSlide,
+        slideItemWidth,
+        slidePage,
+        draggable,
+        itemsPerPage,
+        container,
+    ]);
+    // 최초 로드 및 리사이즈 시 슬라이드 아이템 너비 계산
+    useEffect(function () {
+        calcSlideItemWidth();
+        window.addEventListener("resize", _.debounce(calcSlideItemWidth, 100));
+        return function () {
+            window.removeEventListener("resize", _.debounce(calcSlideItemWidth, 100));
+        };
+    }, [calcSlideItemWidth]);
+    // 자동 슬라이드
     useEffect(function () {
         if (!autoSlide)
             return;
@@ -303,33 +295,65 @@ var Slide = function (_a) {
             clearInterval(automaticSlide);
         };
     }, [activeAutoSlide, autoSlide, autoSlideInterval, maxPage]);
-    return (_jsx(StyledSlide, { children: _jsxs("div", __assign({ className: "slide" }, { children: [_jsxs("div", __assign({ className: "navigation", style: {
-                        translate: pagination ? "0px -8px" : "none",
+    // 페이지네이션 생성
+    var paginationGenerator = useCallback(function () {
+        var dots = [];
+        var _loop_1 = function (i) {
+            dots.push(_jsx("div", { className: "dot", style: {
+                    cursor: clickablePagination ? "pointer" : "default",
+                    backgroundColor: color,
+                    opacity: i === slidePage ? 1 : 0.3,
+                    width: i === slidePage ? "15px" : "7px",
+                }, onClick: clickablePagination
+                    ? function () {
+                        setSlidePage(i);
+                        setActiveAutoSlide(false);
+                    }
+                    : function () { } }, i));
+        };
+        for (var i = 0; i < maxPage; i++) {
+            _loop_1(i);
+        }
+        return dots;
+    }, [clickablePagination, color, maxPage, slidePage]);
+    return (_jsx(StyledSlide, { children: _jsxs("div", __assign({ className: "slide", style: {
+                paddingTop: "".concat(containerPaddingY, "px"),
+                paddingBottom: "".concat(containerPaddingY, "px"),
+            } }, { children: [_jsxs("div", __assign({ className: "navigation", style: {
+                        translate: pagination ? "0px -16px" : "none",
                     } }, { children: [_jsx("button", __assign({ onClick: onPrevClick, style: {
                                 width: "".concat(navSize, "px"),
                                 height: "".concat(navSize, "px"),
                                 opacity: navOpacity,
+                                background: navBackground,
+                                boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
                             } }, { children: _jsx("svg", __assign({ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 300 300", style: {
                                     stroke: color,
                                 } }, { children: _jsx("polyline", { points: "221.98 32.98 78.02 150 221.98 267.02" }) })) })), _jsx("button", __assign({ onClick: onNextClick, style: {
                                 width: "".concat(navSize, "px"),
                                 height: "".concat(navSize, "px"),
                                 opacity: navOpacity,
+                                background: navBackground,
+                                boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
                             } }, { children: _jsx("svg", __assign({ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 300 300", style: {
                                     stroke: color,
-                                } }, { children: _jsx("polyline", { points: "78.79 267.02 222.75 150 78.79 32.98" }) })) }))] })), _jsx("ul", __assign({ ref: slideRef, className: "slider", style: {
+                                } }, { children: _jsx("polyline", { points: "78.79 267.02 222.75 150 78.79 32.98" }) })) }))] })), _jsxs("ul", __assign({ ref: slideRef, className: "slider", style: {
                         cursor: blockLink ? "grabbing" : "default",
                         paddingLeft: "".concat(containerPaddingX, "px"),
                         paddingRight: "".concat(containerPaddingX, "px"),
-                        paddingTop: "".concat(containerPaddingY, "px"),
-                        paddingBottom: "".concat(containerPaddingY, "px"),
                         alignItems: alignItems,
                         transition: !dragging ? "all 0.5s" : "none",
                         marginBottom: pagination ? "32px" : "",
-                    } }, { children: children.map(function (child, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX }, { children: _jsx("li", __assign({ style: {
-                                pointerEvents: blockLink ? "none" : "all",
-                            } }, { children: child })) }), i)); }) })), pagination && (_jsx("div", __assign({ className: "pagination" }, { children: paginationGenerator() })))] })) }));
+                    } }, { children: [children.map(function (child, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX }, { children: _jsx("li", __assign({ style: {
+                                    pointerEvents: blockLink ? "none" : "all",
+                                } }, { children: child })) }), i)); }), Array(maxPage % itemsPerPage === 0
+                            ? 0
+                            : itemsPerPage - (children.length % itemsPerPage))
+                            .fill(0)
+                            .map(function (el, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX }, { children: _jsx("li", __assign({ style: {
+                                    pointerEvents: blockLink ? "none" : "all",
+                                } }, { children: _jsx("div", {}) })) }), i)); })] })), pagination && (_jsx("div", __assign({ className: "pagination", style: { bottom: 0 + containerPaddingY } }, { children: paginationGenerator() })))] })) }));
 };
-var StyledSlide = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    background-color: white;\n    box-shadow: 1px 1px 5px gray;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.3;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 100%;\n  }\n"], ["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    background-color: white;\n    box-shadow: 1px 1px 5px gray;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.3;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 100%;\n  }\n"])));
+var StyledSlide = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.5;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 7px;\n    transition: all 0.3s;\n  }\n"], ["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.5;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 7px;\n    transition: all 0.3s;\n  }\n"])));
 export default Slide;
 var templateObject_1;

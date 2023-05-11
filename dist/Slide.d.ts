@@ -1,18 +1,19 @@
 import React, { ReactElement, RefObject } from "react";
+type Responsives = Array<{
+    /**아이템 개수를 정의할 컨테이너 width 범위*/
+    range: {
+        from: number | null | undefined;
+        to: number | null | undefined;
+    };
+    /**한 페이지에 포함할 아이템 개수*/
+    itemsPerPage: number;
+}>;
 interface SlideProps {
     children: Array<ReactElement>;
     /**컨테이너 레퍼런스*/
     slideContainer: RefObject<HTMLElement> | HTMLElement;
     /**반응형 슬라이드 아이템 개수 설정*/
-    responsives?: Array<{
-        /**아이템 개수를 정의할 컨테이너 width 범위*/
-        range: {
-            from: number | null | undefined;
-            to: number | null | undefined;
-        };
-        /**한 페이지에 포함할 아이템 개수*/
-        itemsPerPage: number;
-    }>;
+    responsives?: Responsives;
     /**한 페이지에 포함할 아이템 개수의 기본값*/
     defaultItemsPerPage?: number;
     /**아이템 사이 여백*/
@@ -33,6 +34,8 @@ interface SlideProps {
     color?: string;
     /**네비게이션 크기*/
     navSize?: number;
+    /**네비게이션 배경 색상*/
+    navBackground?: string;
     /**네비게이션 투명도*/
     navOpacity?: number;
     /**페이지네이션 여부*/

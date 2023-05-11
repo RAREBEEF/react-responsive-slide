@@ -17,12 +17,12 @@ import { jsx as _jsx } from "react/jsx-runtime";
 import styled from "styled-components";
 var SlideItem = function (_a) {
     var slideItemWidth = _a.slideItemWidth, _b = _a.paddingX, paddingX = _b === void 0 ? 12 : _b, children = _a.children;
-    return (_jsx(StyledSlideItem, { children: _jsx("div", __assign({ className: "slide-item", style: {
+    return (_jsx(StyledSlideItem, { children: _jsx("div", __assign({ className: "slide-item-aZdigdeg", style: {
                 width: "".concat(slideItemWidth, "px"),
                 paddingLeft: "".concat(paddingX, "px"),
                 paddingRight: "".concat(paddingX, "px"),
             } }, { children: children })) }));
 };
-var StyledSlideItem = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide-item {\n    position: relative;\n    height: 100%;\n  }\n"], ["\n  * {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide-item {\n    position: relative;\n    height: 100%;\n  }\n"])));
+var StyledSlideItem = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  .slide-item-aZdigdeg {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n"], ["\n  .slide-item-aZdigdeg {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n"])));
 export default SlideItem;
 var templateObject_1;

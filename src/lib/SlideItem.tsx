@@ -15,7 +15,7 @@ const SlideItem: React.FC<SlideItemProps> = ({
   return (
     <StyledSlideItem>
       <div
-        className="slide-item"
+        className="slide-item-aZdigdeg"
         style={{
           width: `${slideItemWidth}px`,
           paddingLeft: `${paddingX}px`,
@@ -29,7 +29,9 @@ const SlideItem: React.FC<SlideItemProps> = ({
 };
 
 const StyledSlideItem = styled.div`
-  * {
+  .slide-item-aZdigdeg {
+    position: relative;
+    height: 100%;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -37,11 +39,6 @@ const StyledSlideItem = styled.div`
     font-size: 100%;
     font: inherit;
     display: block;
-  }
-
-  .slide-item {
-    position: relative;
-    height: 100%;
   }
 `;
 
