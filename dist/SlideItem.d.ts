@@ -3,6 +3,7 @@ interface SlideItemProps {
     slideItemWidth: number;
     paddingX?: number;
     children: ReactElement;
+    blockLink: boolean;
 }
 declare const SlideItem: React.FC<SlideItemProps>;
 export default SlideItem;

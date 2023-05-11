@@ -5,31 +5,34 @@ interface SlideItemProps {
   slideItemWidth: number;
   paddingX?: number;
   children: ReactElement;
+  blockLink: boolean;
+}
+
+interface StyleProps {
+  slideItemWidth: number;
+  paddingX: number;
+  blockLink: boolean;
 }
 
 const SlideItem: React.FC<SlideItemProps> = ({
   slideItemWidth,
   paddingX = 12,
   children,
+  blockLink,
 }) => {
   return (
-    <StyledSlideItem>
-      <div
-        className="slide-item"
-        style={{
-          width: `${slideItemWidth}px`,
-          paddingLeft: `${paddingX}px`,
-          paddingRight: `${paddingX}px`,
-        }}
-      >
-        {children}
-      </div>
+    <StyledSlideItem
+      slideItemWidth={slideItemWidth}
+      paddingX={paddingX}
+      blockLink={blockLink}
+    >
+      {children}
     </StyledSlideItem>
   );
 };
 
-const StyledSlideItem = styled.div`
-  .slide-item {
+const StyledSlideItem = styled.li<StyleProps>`
+  & {
     position: relative;
     height: 100%;
     box-sizing: border-box;
@@ -39,6 +42,10 @@ const StyledSlideItem = styled.div`
     font-size: 100%;
     font: inherit;
     display: block;
+    width: ${({ slideItemWidth }) => slideItemWidth}px;
+    padding-left: ${({ paddingX }) => paddingX}px;
+    padding-right: ${({ paddingX }) => paddingX}px;
+    pointer-events: ${({ blockLink }) => (blockLink ? "none" : "all")};
   }
 `;
 

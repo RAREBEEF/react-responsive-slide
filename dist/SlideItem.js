@@ -16,13 +16,21 @@ var __assign = (this && this.__assign) || function () {
 import { jsx as _jsx } from "react/jsx-runtime";
 import styled from "styled-components";
 var SlideItem = function (_a) {
-    var slideItemWidth = _a.slideItemWidth, _b = _a.paddingX, paddingX = _b === void 0 ? 12 : _b, children = _a.children;
-    return (_jsx(StyledSlideItem, { children: _jsx("div", __assign({ className: "slide-item", style: {
-                width: "".concat(slideItemWidth, "px"),
-                paddingLeft: "".concat(paddingX, "px"),
-                paddingRight: "".concat(paddingX, "px"),
-            } }, { children: children })) }));
+    var slideItemWidth = _a.slideItemWidth, _b = _a.paddingX, paddingX = _b === void 0 ? 12 : _b, children = _a.children, blockLink = _a.blockLink;
+    return (_jsx(StyledSlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: paddingX, blockLink: blockLink }, { children: children })));
 };
-var StyledSlideItem = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  .slide-item {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n"], ["\n  .slide-item {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n"])));
+var StyledSlideItem = styled.li(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  & {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n    width: ", "px;\n    padding-left: ", "px;\n    padding-right: ", "px;\n    pointer-events: ", ";\n  }\n"], ["\n  & {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n    width: ", "px;\n    padding-left: ", "px;\n    padding-right: ", "px;\n    pointer-events: ", ";\n  }\n"])), function (_a) {
+    var slideItemWidth = _a.slideItemWidth;
+    return slideItemWidth;
+}, function (_a) {
+    var paddingX = _a.paddingX;
+    return paddingX;
+}, function (_a) {
+    var paddingX = _a.paddingX;
+    return paddingX;
+}, function (_a) {
+    var blockLink = _a.blockLink;
+    return (blockLink ? "none" : "all");
+});
 export default SlideItem;
 var templateObject_1;

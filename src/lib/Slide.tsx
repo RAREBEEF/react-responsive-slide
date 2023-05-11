@@ -18,6 +18,10 @@ type Responsives = Array<{
   itemsPerPage: number;
 }>;
 
+interface StyleProps {
+  containerPaddingY: number;
+}
+
 interface SlideProps {
   children: Array<ReactElement>;
   /**컨테이너 레퍼런스*/
@@ -428,128 +432,114 @@ const Slide: React.FC<SlideProps> = ({
   }, [clickablePagination, color, maxPage, slidePage]);
 
   return (
-    <StyledSlide>
+    <StyledSlide containerPaddingY={containerPaddingY}>
       <div
-        className="slide"
+        className="navigation"
         style={{
-          paddingTop: `${containerPaddingY}px`,
-          paddingBottom: `${containerPaddingY}px`,
+          translate: pagination ? "0px -16px" : "none",
         }}
       >
-        <div
-          className="navigation"
+        <button
+          onClick={onPrevClick}
           style={{
-            translate: pagination ? "0px -16px" : "none",
+            width: `${navSize}px`,
+            height: `${navSize}px`,
+            opacity: navOpacity,
+            background: navBackground,
+            boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
           }}
         >
-          <button
-            onClick={onPrevClick}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 300 300"
             style={{
-              width: `${navSize}px`,
-              height: `${navSize}px`,
-              opacity: navOpacity,
-              background: navBackground,
-              boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
+              stroke: color,
             }}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 300 300"
-              style={{
-                stroke: color,
-              }}
-            >
-              <polyline points="221.98 32.98 78.02 150 221.98 267.02" />
-            </svg>
-          </button>
-          <button
-            onClick={onNextClick}
-            style={{
-              width: `${navSize}px`,
-              height: `${navSize}px`,
-              opacity: navOpacity,
-              background: navBackground,
-              boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
-            }}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 300 300"
-              style={{
-                stroke: color,
-              }}
-            >
-              <polyline points="78.79 267.02 222.75 150 78.79 32.98" />
-            </svg>
-          </button>
-        </div>
-        <ul
-          ref={slideRef}
-          className="slider"
+            <polyline points="221.98 32.98 78.02 150 221.98 267.02" />
+          </svg>
+        </button>
+        <button
+          onClick={onNextClick}
           style={{
-            cursor: blockLink ? "grabbing" : "default",
-            paddingLeft: `${containerPaddingX}px`,
-            paddingRight: `${containerPaddingX}px`,
-            alignItems,
-            transition: !dragging ? "all 0.5s" : "none",
-            marginBottom: pagination ? "32px" : "",
+            width: `${navSize}px`,
+            height: `${navSize}px`,
+            opacity: navOpacity,
+            background: navBackground,
+            boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
           }}
         >
-          {children.map((child, i) => (
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 300 300"
+            style={{
+              stroke: color,
+            }}
+          >
+            <polyline points="78.79 267.02 222.75 150 78.79 32.98" />
+          </svg>
+        </button>
+      </div>
+      <ul
+        ref={slideRef}
+        className="slider"
+        style={{
+          cursor: blockLink ? "grabbing" : "default",
+          paddingLeft: `${containerPaddingX}px`,
+          paddingRight: `${containerPaddingX}px`,
+          alignItems,
+          transition: !dragging ? "all 0.5s" : "none",
+          marginBottom: pagination ? "32px" : "",
+        }}
+      >
+        {children.map((child, i) => (
+          <SlideItem
+            key={i}
+            slideItemWidth={slideItemWidth}
+            paddingX={itemPaddingX}
+            blockLink={blockLink}
+          >
+            {child}
+          </SlideItem>
+        ))}
+        {Array(
+          maxPage % itemsPerPage === 0
+            ? 0
+            : itemsPerPage - (children.length % itemsPerPage)
+        )
+          .fill(0)
+          .map((el, i) => (
             <SlideItem
               key={i}
               slideItemWidth={slideItemWidth}
               paddingX={itemPaddingX}
+              blockLink={blockLink}
             >
-              <li
+              <div
                 style={{
                   pointerEvents: blockLink ? "none" : "all",
                 }}
-              >
-                {child}
-              </li>
+              ></div>
             </SlideItem>
           ))}
-          {Array(
-            maxPage % itemsPerPage === 0
-              ? 0
-              : itemsPerPage - (children.length % itemsPerPage)
-          )
-            .fill(0)
-            .map((el, i) => (
-              <SlideItem
-                key={i}
-                slideItemWidth={slideItemWidth}
-                paddingX={itemPaddingX}
-              >
-                <li
-                  style={{
-                    pointerEvents: blockLink ? "none" : "all",
-                  }}
-                >
-                  <div></div>
-                </li>
-              </SlideItem>
-            ))}
-        </ul>
-        {pagination && (
-          <div className="pagination" style={{ bottom: 0 + containerPaddingY }}>
-            {paginationGenerator()}
-          </div>
-        )}
-      </div>
+      </ul>
+      {pagination && (
+        <div className="pagination" style={{ bottom: 0 + containerPaddingY }}>
+          {paginationGenerator()}
+        </div>
+      )}
     </StyledSlide>
   );
 };
 
-const StyledSlide = styled.div`
-  .slide,
-  .slide > .navigation,
-  .slide > .navigation > button,
-  .slide > .navigation > button > svg,
-  .slide > .slider,
-  .slide > .pagination,
-  .slide > .pagination > .dot {
+const StyledSlide = styled.div<StyleProps>`
+  &,
+  & > .navigation,
+  & > .navigation > button,
+  & > .navigation > button > svg,
+  & > .slider,
+  & > .pagination,
+  & > .pagination > .dot {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -558,17 +548,18 @@ const StyledSlide = styled.div`
     font: inherit;
     display: block;
   }
-
-  .slide {
+  & {
+    padding-top: ${({ containerPaddingY }) => containerPaddingY}px;
+    padding-bottom: ${({ containerPaddingY }) => containerPaddingY}px;
     overflow: hidden;
     position: relative;
     height: fit-content;
     min-height: 50px;
     display: flex;
     align-items: center;
+    position: relative;
   }
-
-  .slide > .navigation {
+  & > .navigation {
     z-index: 10;
     pointer-events: none;
     position: absolute;
@@ -580,7 +571,7 @@ const StyledSlide = styled.div`
     display: flex;
     justify-content: space-between;
   }
-  .slide > .navigation > button {
+  & > .navigation > button {
     pointer-events: all;
     cursor: pointer;
     position: relative;
@@ -592,7 +583,7 @@ const StyledSlide = styled.div`
     border-radius: 100%;
     border: none;
   }
-  .slide > .navigation > button > svg {
+  & > .navigation > button > svg {
     width: 100%;
     fill: none;
     stroke-linecap: round;
@@ -602,23 +593,23 @@ const StyledSlide = styled.div`
     transition: all 0.3s;
     margin: 10%;
   }
-  .slide > .navigation > button:hover > svg {
+  & > .navigation > button:hover > svg {
     opacity: 1;
   }
-  .slide > .navigation > button:first-child {
+  & > .navigation > button:first-child {
     margin-left: 10px;
   }
-  .slide > .navigation > button:last-child {
+  & > .navigation > button:last-child {
     margin-right: 10px;
   }
-  .slide > .navigation > button:first-child > svg {
+  & > .navigation > button:first-child > svg {
     margin-right: 20%;
   }
-  .slide > .navigation > button:last-child > svg {
+  & > .navigation > button:last-child > svg {
     margin-left: 20%;
   }
 
-  .slide > .slider {
+  & > .slider {
     user-select: none;
     position: relative;
     height: fit-content;
@@ -627,7 +618,7 @@ const StyledSlide = styled.div`
     list-style: none;
   }
 
-  .slide > .pagination {
+  & > .pagination {
     position: absolute;
     height: 16px;
     width: 100%;
@@ -637,7 +628,7 @@ const StyledSlide = styled.div`
     justify-content: center;
     gap: 7px;
   }
-  .slide > .pagination > .dot {
+  & > .pagination > .dot {
     height: 7px;
     width: 7px;
     border-radius: 7px;

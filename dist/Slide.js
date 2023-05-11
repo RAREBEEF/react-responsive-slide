@@ -316,44 +316,45 @@ var Slide = function (_a) {
         }
         return dots;
     }, [clickablePagination, color, maxPage, slidePage]);
-    return (_jsx(StyledSlide, { children: _jsxs("div", __assign({ className: "slide", style: {
-                paddingTop: "".concat(containerPaddingY, "px"),
-                paddingBottom: "".concat(containerPaddingY, "px"),
-            } }, { children: [_jsxs("div", __assign({ className: "navigation", style: {
-                        translate: pagination ? "0px -16px" : "none",
-                    } }, { children: [_jsx("button", __assign({ onClick: onPrevClick, style: {
-                                width: "".concat(navSize, "px"),
-                                height: "".concat(navSize, "px"),
-                                opacity: navOpacity,
-                                background: navBackground,
-                                boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
-                            } }, { children: _jsx("svg", __assign({ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 300 300", style: {
-                                    stroke: color,
-                                } }, { children: _jsx("polyline", { points: "221.98 32.98 78.02 150 221.98 267.02" }) })) })), _jsx("button", __assign({ onClick: onNextClick, style: {
-                                width: "".concat(navSize, "px"),
-                                height: "".concat(navSize, "px"),
-                                opacity: navOpacity,
-                                background: navBackground,
-                                boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
-                            } }, { children: _jsx("svg", __assign({ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 300 300", style: {
-                                    stroke: color,
-                                } }, { children: _jsx("polyline", { points: "78.79 267.02 222.75 150 78.79 32.98" }) })) }))] })), _jsxs("ul", __assign({ ref: slideRef, className: "slider", style: {
-                        cursor: blockLink ? "grabbing" : "default",
-                        paddingLeft: "".concat(containerPaddingX, "px"),
-                        paddingRight: "".concat(containerPaddingX, "px"),
-                        alignItems: alignItems,
-                        transition: !dragging ? "all 0.5s" : "none",
-                        marginBottom: pagination ? "32px" : "",
-                    } }, { children: [children.map(function (child, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX }, { children: _jsx("li", __assign({ style: {
-                                    pointerEvents: blockLink ? "none" : "all",
-                                } }, { children: child })) }), i)); }), Array(maxPage % itemsPerPage === 0
-                            ? 0
-                            : itemsPerPage - (children.length % itemsPerPage))
-                            .fill(0)
-                            .map(function (el, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX }, { children: _jsx("li", __assign({ style: {
-                                    pointerEvents: blockLink ? "none" : "all",
-                                } }, { children: _jsx("div", {}) })) }), i)); })] })), pagination && (_jsx("div", __assign({ className: "pagination", style: { bottom: 0 + containerPaddingY } }, { children: paginationGenerator() })))] })) }));
+    return (_jsxs(StyledSlide, __assign({ containerPaddingY: containerPaddingY }, { children: [_jsxs("div", __assign({ className: "navigation", style: {
+                    translate: pagination ? "0px -16px" : "none",
+                } }, { children: [_jsx("button", __assign({ onClick: onPrevClick, style: {
+                            width: "".concat(navSize, "px"),
+                            height: "".concat(navSize, "px"),
+                            opacity: navOpacity,
+                            background: navBackground,
+                            boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
+                        } }, { children: _jsx("svg", __assign({ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 300 300", style: {
+                                stroke: color,
+                            } }, { children: _jsx("polyline", { points: "221.98 32.98 78.02 150 221.98 267.02" }) })) })), _jsx("button", __assign({ onClick: onNextClick, style: {
+                            width: "".concat(navSize, "px"),
+                            height: "".concat(navSize, "px"),
+                            opacity: navOpacity,
+                            background: navBackground,
+                            boxShadow: navBackground === "none" ? "none" : "1px 1px 5px gray",
+                        } }, { children: _jsx("svg", __assign({ xmlns: "http://www.w3.org/2000/svg", viewBox: "0 0 300 300", style: {
+                                stroke: color,
+                            } }, { children: _jsx("polyline", { points: "78.79 267.02 222.75 150 78.79 32.98" }) })) }))] })), _jsxs("ul", __assign({ ref: slideRef, className: "slider", style: {
+                    cursor: blockLink ? "grabbing" : "default",
+                    paddingLeft: "".concat(containerPaddingX, "px"),
+                    paddingRight: "".concat(containerPaddingX, "px"),
+                    alignItems: alignItems,
+                    transition: !dragging ? "all 0.5s" : "none",
+                    marginBottom: pagination ? "32px" : "",
+                } }, { children: [children.map(function (child, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX, blockLink: blockLink }, { children: child }), i)); }), Array(maxPage % itemsPerPage === 0
+                        ? 0
+                        : itemsPerPage - (children.length % itemsPerPage))
+                        .fill(0)
+                        .map(function (el, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX, blockLink: blockLink }, { children: _jsx("div", { style: {
+                                pointerEvents: blockLink ? "none" : "all",
+                            } }) }), i)); })] })), pagination && (_jsx("div", __assign({ className: "pagination", style: { bottom: 0 + containerPaddingY } }, { children: paginationGenerator() })))] })));
 };
-var StyledSlide = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  .slide,\n  .slide > .navigation,\n  .slide > .navigation > button,\n  .slide > .navigation > button > svg,\n  .slide > .slider,\n  .slide > .pagination,\n  .slide > .pagination > .dot {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.5;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 7px;\n    transition: all 0.3s;\n  }\n"], ["\n  .slide,\n  .slide > .navigation,\n  .slide > .navigation > button,\n  .slide > .navigation > button > svg,\n  .slide > .slider,\n  .slide > .pagination,\n  .slide > .pagination > .dot {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n\n  .slide {\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n  }\n\n  .slide > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  .slide > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    border: none;\n  }\n  .slide > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.5;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  .slide > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  .slide > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  .slide > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  .slide > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  .slide > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  .slide > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  .slide > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  .slide > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 7px;\n    transition: all 0.3s;\n  }\n"])));
+var StyledSlide = styled.div(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  &,\n  & > .navigation,\n  & > .navigation > button,\n  & > .navigation > button > svg,\n  & > .slider,\n  & > .pagination,\n  & > .pagination > .dot {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n  & {\n    padding-top: ", "px;\n    padding-bottom: ", "px;\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n    position: relative;\n  }\n  & > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  & > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    border: none;\n  }\n  & > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.5;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  & > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  & > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  & > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  & > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  & > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  & > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  & > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  & > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 7px;\n    transition: all 0.3s;\n  }\n"], ["\n  &,\n  & > .navigation,\n  & > .navigation > button,\n  & > .navigation > button > svg,\n  & > .slider,\n  & > .pagination,\n  & > .pagination > .dot {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n  }\n  & {\n    padding-top: ", "px;\n    padding-bottom: ", "px;\n    overflow: hidden;\n    position: relative;\n    height: fit-content;\n    min-height: 50px;\n    display: flex;\n    align-items: center;\n    position: relative;\n  }\n  & > .navigation {\n    z-index: 10;\n    pointer-events: none;\n    position: absolute;\n    width: 100%;\n    height: 100%;\n    left: 0;\n    top: 0;\n    bottom: 0;\n    display: flex;\n    justify-content: space-between;\n  }\n  & > .navigation > button {\n    pointer-events: all;\n    cursor: pointer;\n    position: relative;\n    margin-top: auto;\n    margin-bottom: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    border-radius: 100%;\n    border: none;\n  }\n  & > .navigation > button > svg {\n    width: 100%;\n    fill: none;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n    stroke-width: 50px;\n    opacity: 0.5;\n    transition: all 0.3s;\n    margin: 10%;\n  }\n  & > .navigation > button:hover > svg {\n    opacity: 1;\n  }\n  & > .navigation > button:first-child {\n    margin-left: 10px;\n  }\n  & > .navigation > button:last-child {\n    margin-right: 10px;\n  }\n  & > .navigation > button:first-child > svg {\n    margin-right: 20%;\n  }\n  & > .navigation > button:last-child > svg {\n    margin-left: 20%;\n  }\n\n  & > .slider {\n    user-select: none;\n    position: relative;\n    height: fit-content;\n    width: fit-content;\n    display: flex;\n    list-style: none;\n  }\n\n  & > .pagination {\n    position: absolute;\n    height: 16px;\n    width: 100%;\n    bottom: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 7px;\n  }\n  & > .pagination > .dot {\n    height: 7px;\n    width: 7px;\n    border-radius: 7px;\n    transition: all 0.3s;\n  }\n"])), function (_a) {
+    var containerPaddingY = _a.containerPaddingY;
+    return containerPaddingY;
+}, function (_a) {
+    var containerPaddingY = _a.containerPaddingY;
+    return containerPaddingY;
+});
 export default Slide;
 var templateObject_1;
