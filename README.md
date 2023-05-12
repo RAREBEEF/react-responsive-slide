@@ -29,7 +29,7 @@ function App() {
 ```
 
 2. `<Slide>`를 부모 요소(컨테이너)로 감싸고 그 레퍼런스를 생성해 `<Slide>` 컴포넌트의 Prop으로 전달합니다.  
-   컨테이너는 반응형의 기준으로 사용됩니다.
+   컨테이너는 반응형의 기준으로 사용됩니다. 컨테이너의 너비에 꼭 신경써 주세요.
 
 ```ts
 import { useRef } from "react";
@@ -99,7 +99,7 @@ responsives={[
 ### **2. `defaultItemsPerPage`**
 
 기본값으로 사용할 페이지당 슬라이드 아이템 개수입니다.  
-컨테이너의 사이즈가 `responsives`로 전달한 범위 어디에도 속하지 않을 경우와 초기값으류 사용됩니다.  
+컨테이너의 사이즈가 `responsives`로 전달한 범위 어디에도 속하지 않을 경우와 초기값으로 사용됩니다.  
 기본값은 `2` 입니다.
 
 ```ts
@@ -190,7 +190,7 @@ navSize={40};
 ### **11. `navBackground`**
 
 네비게이션 버튼의 배경 색상을 설정합니다. css Background 값으로 사용됩니다. `none` 으로 배경을 없앨 수 있습니다.  
-기본값은 `white` 입니다.
+기본값은 `none` 입니다.
 
 ```ts
 navBackground = "white";
@@ -217,11 +217,18 @@ clickablePagination={true};
 </br>
 </br>
 
+# **유의 사항**
+
+컨테이너가 슬라이드의 반응형 기준이 되기 때문에 컨테이너가 항상 적절한 너비를 유지할 수 있도록 신경써 주세요.
+
+</br>
+</br>
+
 # **예시**
 
 ```ts
 import React, { useRef } from "react";
-import Slide from "./lib";
+import Slide from "react-responsive-slide";
 
 function App() {
   const containerRef = useRef<HTMLDivElement>(null);

@@ -17,9 +17,8 @@ import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
 import { useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import SlideItem from "./SlideItem";
 import styled from "styled-components";
-import _ from "lodash";
 var Slide = function (_a) {
-    var children = _a.children, customResponsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, _f = _a.containerPaddingY, containerPaddingY = _f === void 0 ? 20 : _f, _g = _a.autoSlide, autoSlide = _g === void 0 ? false : _g, _h = _a.autoSlideInterval, autoSlideInterval = _h === void 0 ? 3000 : _h, _j = _a.draggable, draggable = _j === void 0 ? true : _j, slideContainer = _a.slideContainer, _k = _a.color, color = _k === void 0 ? "gray" : _k, _l = _a.navSize, navSize = _l === void 0 ? 40 : _l, _m = _a.navBackground, navBackground = _m === void 0 ? "white" : _m, _o = _a.navOpacity, navOpacity = _o === void 0 ? 1 : _o, _p = _a.pagination, pagination = _p === void 0 ? true : _p, _q = _a.clickablePagination, clickablePagination = _q === void 0 ? true : _q;
+    var children = _a.children, customResponsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, _f = _a.containerPaddingY, containerPaddingY = _f === void 0 ? 20 : _f, _g = _a.autoSlide, autoSlide = _g === void 0 ? false : _g, _h = _a.autoSlideInterval, autoSlideInterval = _h === void 0 ? 3000 : _h, _j = _a.draggable, draggable = _j === void 0 ? true : _j, slideContainer = _a.slideContainer, _k = _a.color, color = _k === void 0 ? "gray" : _k, _l = _a.navSize, navSize = _l === void 0 ? 40 : _l, _m = _a.navBackground, navBackground = _m === void 0 ? "none" : _m, _o = _a.navOpacity, navOpacity = _o === void 0 ? 1 : _o, _p = _a.pagination, pagination = _p === void 0 ? true : _p, _q = _a.clickablePagination, clickablePagination = _q === void 0 ? true : _q;
     var itemCount = useMemo(function () { return children.length; }, [children.length]);
     var slideRef = useRef(null);
     var _r = useState(autoSlide), activeAutoSlide = _r[0], setActiveAutoSlide = _r[1];
@@ -32,10 +31,10 @@ var Slide = function (_a) {
     var _y = useState(null), container = _y[0], setContainer = _y[1];
     var _z = useState(customResponsives), responsives = _z[0], setResponsives = _z[1];
     // 컨테이너 체크
-    var isHTMLElementRef = function (ref) {
-        return ref.current !== undefined;
-    };
     useEffect(function () {
+        var isHTMLElementRef = function (ref) {
+            return ref.current !== undefined;
+        };
         if (isHTMLElementRef(slideContainer)) {
             setContainer(slideContainer.current);
         }
@@ -44,17 +43,13 @@ var Slide = function (_a) {
         }
     }, [slideContainer]);
     // 페이지 이동
-    var moveSlide = useCallback(function () {
-        setBlockLink(false);
-        if (!slideRef.current)
+    useEffect(function () {
+        if (!slideRef.current || dragging)
             return;
         var slide = slideRef.current;
         var moveX = -slideItemWidth * itemsPerPage * slidePage;
         slide.style.transform = "translateX(".concat(moveX, "px)");
-    }, [slideItemWidth, slidePage, itemsPerPage]);
-    useEffect(function () {
-        moveSlide();
-    }, [moveSlide]);
+    }, [slideItemWidth, slidePage, itemsPerPage, dragging]);
     var increasePage = function () {
         setSlidePage(function (prev) { return (prev === maxPage - 1 ? 0 : prev + 1); });
     };
@@ -99,11 +94,91 @@ var Slide = function (_a) {
         defaultItemsPerPage,
         customResponsives,
     ]);
+    // 슬라이드 드래그
+    useEffect(function () {
+        if (!slideRef.current || !draggable || !container)
+            return;
+        var slide = slideRef.current;
+        var containerWidth = container.clientWidth;
+        var slideInitX = -slideItemWidth * itemsPerPage * slidePage;
+        var touchStartX;
+        var touchMoveX;
+        // 터치 드래그
+        var touchMoveHandler = function (e) {
+            if (!slideRef.current)
+                return;
+            var slide = slideRef.current;
+            setDragging(true);
+            touchMoveX = e.touches[0].clientX - touchStartX;
+            slide.style.transform = "translateX(".concat(slideInitX + touchMoveX, "px)");
+        };
+        var touchEndHandler = function (e) {
+            setDragging(false);
+            if (touchMoveX) {
+                var newPage = slidePage -
+                    Math.sign(touchMoveX) *
+                        (Math.abs(touchMoveX) >= containerWidth / 4 ? 1 : 0);
+                setSlidePage(newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage);
+            }
+            window.removeEventListener("touchmove", touchMoveHandler);
+        };
+        var touchStartHandler = function (e) {
+            setActiveAutoSlide(false);
+            touchStartX = e.touches[0].clientX;
+            window.addEventListener("touchmove", touchMoveHandler);
+            window.addEventListener("touchend", touchEndHandler, { once: true });
+        };
+        // 마우스 드래그
+        var mouseMoveHandler = function (e) {
+            if (e.cancelable)
+                e.preventDefault();
+            if (!slideRef.current)
+                return;
+            var slide = slideRef.current;
+            touchMoveX = e.clientX - touchStartX;
+            // 드래그 시 제품으로 링크 이동을 막는다.
+            if (Math.abs(touchMoveX) >= 25) {
+                setBlockLink(true);
+            }
+            slide.style.transform = "translateX(".concat(slideInitX + touchMoveX, "px)");
+        };
+        var mouseUpHandler = function (e) {
+            if (e.cancelable)
+                e.preventDefault();
+            setDragging(false);
+            setBlockLink(false);
+            if (touchMoveX) {
+                var newPage = slidePage -
+                    Math.sign(touchMoveX) *
+                        (Math.abs(touchMoveX) >= containerWidth / 4 ? 1 : 0);
+                setSlidePage(newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage);
+            }
+            window.removeEventListener("mousemove", mouseMoveHandler);
+        };
+        var MouseDownHandler = function (e) {
+            if (e.cancelable)
+                e.preventDefault();
+            setActiveAutoSlide(false);
+            setDragging(true);
+            touchStartX = e.clientX;
+            window.addEventListener("mousemove", mouseMoveHandler);
+            window.addEventListener("mouseup", mouseUpHandler, { once: true });
+        };
+        slide.addEventListener("touchstart", touchStartHandler);
+        slide.addEventListener("mousedown", MouseDownHandler);
+        return function () {
+            slide.removeEventListener("touchstart", touchStartHandler);
+            window.removeEventListener("touchmove", touchMoveHandler);
+            window.removeEventListener("touchend", touchEndHandler);
+            slide.removeEventListener("mousedown", MouseDownHandler);
+            window.removeEventListener("mousemove", mouseMoveHandler);
+            window.removeEventListener("mouseup", mouseUpHandler);
+        };
+    }, [maxPage, slideItemWidth, slidePage, draggable, itemsPerPage, container]);
     // 슬라이드 아이템 너비 계산
-    var calcSlideItemWidth = useCallback(function () {
+    var calcSlideItemWidth = useCallback(function (containerWidth) {
         if (!container || !responsives)
             return;
-        var containerWidth = container.clientWidth;
         var padding = containerPaddingX * 2;
         for (var i = 0; i < responsives.length; i++) {
             var _a = responsives[i], _b = _a.range, from = _b.from, to = _b.to, itemsPerPage_1 = _a.itemsPerPage;
@@ -168,117 +243,24 @@ var Slide = function (_a) {
                 }
             }
         }
-    }, [
-        container,
-        responsives,
-        containerPaddingX,
-        itemCount,
-        defaultItemsPerPage,
-    ]);
-    // 슬라이드 드래그
+    }, [container, responsives, containerPaddingX, itemCount, defaultItemsPerPage]);
+    // 아이템 너비 계산 실행 및 컨테이너 리사이즈 옵저버 생성
     useEffect(function () {
-        if (!slideRef.current || !draggable || !container)
+        if (!container)
             return;
-        var slide = slideRef.current;
-        var containerWidth = container.clientWidth;
-        var slideInitX = -slideItemWidth * itemsPerPage * slidePage;
-        var touchStartX;
-        var touchMoveX;
-        // 터치 드래그
-        var touchMoveHandler = function (e) {
-            if (e.cancelable)
-                e.preventDefault();
-            if (!slideRef.current)
-                return;
-            var slide = slideRef.current;
-            touchMoveX = e.touches[0].clientX - touchStartX;
-            slide.style.transform = "translateX(".concat(slideInitX + touchMoveX, "px)");
-        };
-        var touchEndHandler = function (e) {
-            if (e.cancelable)
-                e.preventDefault();
-            setDragging(false);
-            if (touchMoveX) {
-                var newPage = slidePage -
-                    Math.sign(touchMoveX) *
-                        (Math.abs(touchMoveX) >= containerWidth / 4 ? 1 : 0);
-                setSlidePage(newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage);
-                moveSlide();
+        calcSlideItemWidth(container.clientWidth);
+        var resizeObserver = new ResizeObserver(function (entries) {
+            for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
+                var entry = entries_1[_i];
+                var contentRect = entry.contentRect;
+                calcSlideItemWidth(contentRect.width);
             }
-            window.removeEventListener("touchmove", touchMoveHandler);
-        };
-        var touchStartHandler = function (e) {
-            if (e.cancelable)
-                e.preventDefault();
-            setActiveAutoSlide(false);
-            setDragging(true);
-            touchStartX = e.touches[0].clientX;
-            window.addEventListener("touchmove", touchMoveHandler);
-            window.addEventListener("touchend", touchEndHandler, { once: true });
-        };
-        // 마우스 드래그
-        var mouseMoveHandler = function (e) {
-            if (e.cancelable)
-                e.preventDefault();
-            if (!slideRef.current)
-                return;
-            var slide = slideRef.current;
-            touchMoveX = e.clientX - touchStartX;
-            // 드래그 시 제품으로 링크 이동을 막는다.
-            if (Math.abs(touchMoveX) >= 25) {
-                setBlockLink(true);
-            }
-            slide.style.transform = "translateX(".concat(slideInitX + touchMoveX, "px)");
-        };
-        var mouseUpHandler = function (e) {
-            if (e.cancelable)
-                e.preventDefault();
-            setDragging(false);
-            if (touchMoveX) {
-                var newPage = slidePage -
-                    Math.sign(touchMoveX) *
-                        (Math.abs(touchMoveX) >= containerWidth / 4 ? 1 : 0);
-                setSlidePage(newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage);
-                moveSlide();
-            }
-            window.removeEventListener("mousemove", mouseMoveHandler);
-        };
-        var MouseDownHandler = function (e) {
-            if (e.cancelable)
-                e.preventDefault();
-            setActiveAutoSlide(false);
-            setDragging(true);
-            touchStartX = e.clientX;
-            window.addEventListener("mousemove", mouseMoveHandler);
-            window.addEventListener("mouseup", mouseUpHandler, { once: true });
-        };
-        slide.addEventListener("touchstart", touchStartHandler);
-        slide.addEventListener("mousedown", MouseDownHandler);
+        });
+        resizeObserver.observe(container);
         return function () {
-            slide.removeEventListener("touchstart", touchStartHandler);
-            window.removeEventListener("touchmove", touchMoveHandler);
-            window.removeEventListener("touchend", touchEndHandler);
-            slide.removeEventListener("mousedown", MouseDownHandler);
-            window.removeEventListener("mousemove", mouseMoveHandler);
-            window.removeEventListener("mouseup", mouseUpHandler);
+            resizeObserver.disconnect();
         };
-    }, [
-        maxPage,
-        moveSlide,
-        slideItemWidth,
-        slidePage,
-        draggable,
-        itemsPerPage,
-        container,
-    ]);
-    // 최초 로드 및 리사이즈 시 슬라이드 아이템 너비 계산
-    useEffect(function () {
-        calcSlideItemWidth();
-        window.addEventListener("resize", _.debounce(calcSlideItemWidth, 100));
-        return function () {
-            window.removeEventListener("resize", _.debounce(calcSlideItemWidth, 100));
-        };
-    }, [calcSlideItemWidth]);
+    }, [calcSlideItemWidth, container]);
     // 자동 슬라이드
     useEffect(function () {
         if (!autoSlide)

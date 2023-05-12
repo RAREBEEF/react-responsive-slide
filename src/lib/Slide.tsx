@@ -72,7 +72,7 @@ const Slide: React.FC<SlideProps> = ({
   slideContainer,
   color = "gray",
   navSize = 40,
-  navBackground = "white",
+  navBackground = "none",
   navOpacity = 1,
   pagination = true,
   clickablePagination = true,
@@ -89,25 +89,16 @@ const Slide: React.FC<SlideProps> = ({
   );
   const [maxPage, setMaxPage] = useState<number>(3);
   const [container, setContainer] = useState<HTMLElement | null>(null);
-  const [responsives, setResponsives] = useState<
-    | Array<{
-        /**아이템 개수를 정의할 컨테이너 width 범위*/
-        range: {
-          from: number | null | undefined;
-          to: number | null | undefined;
-        };
-        /**한 페이지에 포함할 아이템 개수*/
-        itemsPerPage: number;
-      }>
-    | undefined
-  >(customResponsives);
+  const [responsives, setResponsives] = useState<Responsives | undefined>(
+    customResponsives
+  );
 
   // 컨테이너 체크
-  const isHTMLElementRef = (ref: unknown): ref is RefObject<HTMLElement> => {
-    return (ref as RefObject<HTMLElement>).current !== undefined;
-  };
-
   useEffect(() => {
+    const isHTMLElementRef = (ref: unknown): ref is RefObject<HTMLElement> => {
+      return (ref as RefObject<HTMLElement>).current !== undefined;
+    };
+
     if (isHTMLElementRef(slideContainer)) {
       setContainer(slideContainer.current);
     } else {
@@ -116,18 +107,13 @@ const Slide: React.FC<SlideProps> = ({
   }, [slideContainer]);
 
   // 페이지 이동
-  const moveSlide = useCallback(() => {
-    setBlockLink(false);
+  useEffect(() => {
+    if (!slideRef.current || dragging) return;
 
-    if (!slideRef.current) return;
     const { current: slide } = slideRef;
     const moveX = -slideItemWidth * itemsPerPage * slidePage;
     slide.style.transform = `translateX(${moveX}px)`;
-  }, [slideItemWidth, slidePage, itemsPerPage]);
-
-  useEffect(() => {
-    moveSlide();
-  }, [moveSlide]);
+  }, [slideItemWidth, slidePage, itemsPerPage, dragging]);
 
   const increasePage = () => {
     setSlidePage((prev) => (prev === maxPage - 1 ? 0 : prev + 1));
@@ -185,80 +171,6 @@ const Slide: React.FC<SlideProps> = ({
     customResponsives,
   ]);
 
-  // 슬라이드 아이템 너비 계산
-  const calcSlideItemWidth = useCallback(() => {
-    if (!container || !responsives) return;
-
-    const containerWidth = container.clientWidth;
-    const padding = containerPaddingX * 2;
-
-    for (let i = 0; i < responsives.length; i++) {
-      const {
-        range: { from, to },
-        itemsPerPage,
-      } = responsives[i];
-
-      if (!from && !to) {
-        continue;
-      } else if (!!to && !from) {
-        // ~~ to
-        if (containerWidth <= to) {
-          setSlidePage(0);
-          setMaxPage(Math.ceil(itemCount / itemsPerPage));
-          setItemsPerPage(itemsPerPage);
-          setSlideItemWidth((containerWidth - padding) / itemsPerPage);
-          break;
-        } else if (i === responsives.length - 1) {
-          setSlidePage(0);
-          setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
-          setItemsPerPage(defaultItemsPerPage);
-          setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
-        } else {
-          continue;
-        }
-        // from ~~
-      } else if (!!from && !to) {
-        if (containerWidth >= from) {
-          setSlidePage(0);
-          setMaxPage(Math.ceil(itemCount / itemsPerPage));
-          setItemsPerPage(itemsPerPage);
-          setSlideItemWidth((containerWidth - padding) / itemsPerPage);
-          break;
-        } else if (i === responsives.length - 1) {
-          setSlidePage(0);
-          setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
-          setItemsPerPage(defaultItemsPerPage);
-          setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
-        } else {
-          continue;
-        }
-        // from ~ to
-      } else if (!!to && !!from) {
-        if (containerWidth <= to && containerWidth >= from) {
-          setSlidePage(0);
-          setMaxPage(Math.ceil(itemCount / itemsPerPage));
-          setItemsPerPage(itemsPerPage);
-          setSlideItemWidth((containerWidth - padding) / itemsPerPage);
-          break;
-        } else {
-          if (i === responsives.length - 1) {
-            setSlidePage(0);
-            setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
-            setItemsPerPage(defaultItemsPerPage);
-            setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
-            break;
-          }
-        }
-      }
-    }
-  }, [
-    container,
-    responsives,
-    containerPaddingX,
-    itemCount,
-    defaultItemsPerPage,
-  ]);
-
   // 슬라이드 드래그
   useEffect(() => {
     if (!slideRef.current || !draggable || !container) return;
@@ -271,9 +183,9 @@ const Slide: React.FC<SlideProps> = ({
 
     // 터치 드래그
     const touchMoveHandler = (e: TouchEvent) => {
-      if (e.cancelable) e.preventDefault();
       if (!slideRef.current) return;
       const slide = slideRef.current;
+      setDragging(true);
 
       touchMoveX = e.touches[0].clientX - touchStartX;
 
@@ -281,7 +193,6 @@ const Slide: React.FC<SlideProps> = ({
     };
 
     const touchEndHandler = (e: TouchEvent) => {
-      if (e.cancelable) e.preventDefault();
       setDragging(false);
 
       if (touchMoveX) {
@@ -292,16 +203,13 @@ const Slide: React.FC<SlideProps> = ({
         setSlidePage(
           newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage
         );
-        moveSlide();
       }
 
       window.removeEventListener("touchmove", touchMoveHandler);
     };
 
     const touchStartHandler = (e: TouchEvent) => {
-      if (e.cancelable) e.preventDefault();
       setActiveAutoSlide(false);
-      setDragging(true);
 
       touchStartX = e.touches[0].clientX;
       window.addEventListener("touchmove", touchMoveHandler);
@@ -327,6 +235,7 @@ const Slide: React.FC<SlideProps> = ({
     const mouseUpHandler = (e: MouseEvent) => {
       if (e.cancelable) e.preventDefault();
       setDragging(false);
+      setBlockLink(false);
 
       if (touchMoveX) {
         const newPage =
@@ -336,7 +245,6 @@ const Slide: React.FC<SlideProps> = ({
         setSlidePage(
           newPage <= 0 ? 0 : newPage >= maxPage ? maxPage - 1 : newPage
         );
-        moveSlide();
       }
 
       window.removeEventListener("mousemove", mouseMoveHandler);
@@ -363,26 +271,99 @@ const Slide: React.FC<SlideProps> = ({
       window.removeEventListener("mousemove", mouseMoveHandler);
       window.removeEventListener("mouseup", mouseUpHandler);
     };
-  }, [
-    maxPage,
-    moveSlide,
-    slideItemWidth,
-    slidePage,
-    draggable,
-    itemsPerPage,
-    container,
-  ]);
+  }, [maxPage, slideItemWidth, slidePage, draggable, itemsPerPage, container]);
 
-  // 최초 로드 및 리사이즈 시 슬라이드 아이템 너비 계산
+  // 슬라이드 아이템 너비 계산
+  const calcSlideItemWidth = useCallback(
+    (containerWidth: number) => {
+      if (!container || !responsives) return;
+
+      const padding = containerPaddingX * 2;
+
+      for (let i = 0; i < responsives.length; i++) {
+        const {
+          range: { from, to },
+          itemsPerPage,
+        } = responsives[i];
+
+        if (!from && !to) {
+          continue;
+        } else if (!!to && !from) {
+          // ~~ to
+          if (containerWidth <= to) {
+            setSlidePage(0);
+            setMaxPage(Math.ceil(itemCount / itemsPerPage));
+            setItemsPerPage(itemsPerPage);
+            setSlideItemWidth((containerWidth - padding) / itemsPerPage);
+            break;
+          } else if (i === responsives.length - 1) {
+            setSlidePage(0);
+            setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
+            setItemsPerPage(defaultItemsPerPage);
+            setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
+          } else {
+            continue;
+          }
+          // from ~~
+        } else if (!!from && !to) {
+          if (containerWidth >= from) {
+            setSlidePage(0);
+            setMaxPage(Math.ceil(itemCount / itemsPerPage));
+            setItemsPerPage(itemsPerPage);
+            setSlideItemWidth((containerWidth - padding) / itemsPerPage);
+            break;
+          } else if (i === responsives.length - 1) {
+            setSlidePage(0);
+            setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
+            setItemsPerPage(defaultItemsPerPage);
+            setSlideItemWidth((containerWidth - padding) / defaultItemsPerPage);
+          } else {
+            continue;
+          }
+          // from ~ to
+        } else if (!!to && !!from) {
+          if (containerWidth <= to && containerWidth >= from) {
+            setSlidePage(0);
+            setMaxPage(Math.ceil(itemCount / itemsPerPage));
+            setItemsPerPage(itemsPerPage);
+            setSlideItemWidth((containerWidth - padding) / itemsPerPage);
+            break;
+          } else {
+            if (i === responsives.length - 1) {
+              setSlidePage(0);
+              setMaxPage(Math.ceil(itemCount / defaultItemsPerPage));
+              setItemsPerPage(defaultItemsPerPage);
+              setSlideItemWidth(
+                (containerWidth - padding) / defaultItemsPerPage
+              );
+              break;
+            }
+          }
+        }
+      }
+    },
+    [container, responsives, containerPaddingX, itemCount, defaultItemsPerPage]
+  );
+
+  // 아이템 너비 계산 실행 및 컨테이너 리사이즈 옵저버 생성
   useEffect(() => {
-    calcSlideItemWidth();
+    if (!container) return;
 
-    window.addEventListener("resize", _.debounce(calcSlideItemWidth, 100));
+    calcSlideItemWidth(container.clientWidth);
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { contentRect } = entry;
+        calcSlideItemWidth(contentRect.width);
+      }
+    });
+
+    resizeObserver.observe(container);
 
     return () => {
-      window.removeEventListener("resize", _.debounce(calcSlideItemWidth, 100));
+      resizeObserver.disconnect();
     };
-  }, [calcSlideItemWidth]);
+  }, [calcSlideItemWidth, container]);
 
   // 자동 슬라이드
   useEffect(() => {
