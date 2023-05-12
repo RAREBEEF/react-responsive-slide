@@ -13,6 +13,10 @@
 
 드래그도 됩니다. 멋지죠?
 
+아래 링크에서 간단하게 테스트 해볼 수 있습니다.
+
+<a href="https://react-responsive-slide.vercel.app/" target="_blank">https://react-responsive-slide.vercel.app/</a>
+
 </br>
 </br>
 
