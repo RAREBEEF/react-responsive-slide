@@ -1,6 +1,6 @@
 {
   "name": "react-responsive-slide",
-  "version": "0.1.94",
+  "version": "0.1.95",
   "private": false,
   "description": "Responsive draggable slider for React app.",
   "keywords": [
@@ -24,12 +24,10 @@
   "types": "dist/Slide.d.ts",
   "browser": "./browser/specific/main.js",
   "dependencies": {
-    "@types/lodash": "^4.14.194",
     "@types/node": "^16.18.27",
     "@types/react": "^18.2.6",
     "@types/react-dom": "^18.2.4",
     "@types/styled-components": "^5.1.26",
-    "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",

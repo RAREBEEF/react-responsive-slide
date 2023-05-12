@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import SlideItem from "./SlideItem";
 import styled from "styled-components";
-import _ from "lodash";
 
 type Responsives = Array<{
   /**아이템 개수를 정의할 컨테이너 width 범위*/

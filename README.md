@@ -254,9 +254,9 @@ function App() {
           ]}
           defaultItemsPerPage={2}
           itemPaddingX={55}
-          itemPaddingY={20}
           alignItems="center"
           containerPaddingX={55}
+          containerPaddingY={55}
           autoSlide={true}
           autoSlideInterval={3000}
           draggable={true}
@@ -267,15 +267,15 @@ function App() {
           pagination={true}
           clickablePagination={true}
         >
-          <div style={{ height: "100px", backgroundColor: "red" }}>{0}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{1}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{2}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{3}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{4}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{6}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{7}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{8}</div>
-          <div style={{ height: "100px", backgroundColor: "red" }}>{9}</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>0</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>1</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>2</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>3</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>4</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>6</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>7</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>8</div>
+          <div style={{ height: "100px", backgroundColor: "red" }}>9</div>
         </Slide>
       </div>
     </div>
