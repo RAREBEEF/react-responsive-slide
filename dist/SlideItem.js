@@ -16,12 +16,13 @@ var __assign = (this && this.__assign) || function () {
 import { jsx as _jsx } from "react/jsx-runtime";
 import styled from "styled-components";
 var SlideItem = function (_a) {
-    var slideItemWidth = _a.slideItemWidth, _b = _a.paddingX, paddingX = _b === void 0 ? 12 : _b, children = _a.children, blockLink = _a.blockLink;
-    return (_jsx(StyledSlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: paddingX, blockLink: blockLink }, { children: children })));
+    var itemWidth = _a.itemWidth, itemRatio = _a.itemRatio, _b = _a.paddingX, paddingX = _b === void 0 ? 12 : _b, children = _a.children, blockLink = _a.blockLink;
+    console.log(itemRatio);
+    return (_jsx(StyledSlideItem, __assign({ itemWidth: itemWidth, itemRatio: itemRatio, paddingX: paddingX, blockLink: blockLink }, { children: children })));
 };
-var StyledSlideItem = styled.li(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  & {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n    width: ", "px;\n    padding-left: ", "px;\n    padding-right: ", "px;\n    pointer-events: ", ";\n  }\n"], ["\n  & {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n    width: ", "px;\n    padding-left: ", "px;\n    padding-right: ", "px;\n    pointer-events: ", ";\n  }\n"])), function (_a) {
-    var slideItemWidth = _a.slideItemWidth;
-    return slideItemWidth;
+var StyledSlideItem = styled.li(templateObject_1 || (templateObject_1 = __makeTemplateObject(["\n  & {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n    width: ", "px;\n    padding-left: ", "px;\n    padding-right: ", "px;\n    pointer-events: ", ";\n  }\n  & > * {\n    aspect-ratio: ", ";\n  }\n"], ["\n  & {\n    position: relative;\n    height: 100%;\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n    border: 0;\n    font-size: 100%;\n    font: inherit;\n    display: block;\n    width: ", "px;\n    padding-left: ", "px;\n    padding-right: ", "px;\n    pointer-events: ", ";\n  }\n  & > * {\n    aspect-ratio: ", ";\n  }\n"])), function (_a) {
+    var itemWidth = _a.itemWidth;
+    return itemWidth;
 }, function (_a) {
     var paddingX = _a.paddingX;
     return paddingX;
@@ -31,6 +32,9 @@ var StyledSlideItem = styled.li(templateObject_1 || (templateObject_1 = __makeTe
 }, function (_a) {
     var blockLink = _a.blockLink;
     return (blockLink ? "none" : "all");
+}, function (_a) {
+    var itemRatio = _a.itemRatio;
+    return itemRatio;
 });
 export default SlideItem;
 var templateObject_1;

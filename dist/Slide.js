@@ -18,18 +18,18 @@ import { useCallback, useEffect, useMemo, useRef, useState, } from "react";
 import SlideItem from "./SlideItem";
 import styled from "styled-components";
 var Slide = function (_a) {
-    var children = _a.children, customResponsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.alignItems, alignItems = _d === void 0 ? "center" : _d, _e = _a.containerPaddingX, containerPaddingX = _e === void 0 ? 55 : _e, _f = _a.containerPaddingY, containerPaddingY = _f === void 0 ? 20 : _f, _g = _a.autoSlide, autoSlide = _g === void 0 ? false : _g, _h = _a.autoSlideInterval, autoSlideInterval = _h === void 0 ? 3000 : _h, _j = _a.draggable, draggable = _j === void 0 ? true : _j, slideContainer = _a.slideContainer, _k = _a.color, color = _k === void 0 ? "gray" : _k, _l = _a.navSize, navSize = _l === void 0 ? 40 : _l, _m = _a.navBackground, navBackground = _m === void 0 ? "none" : _m, _o = _a.navOpacity, navOpacity = _o === void 0 ? 1 : _o, _p = _a.pagination, pagination = _p === void 0 ? true : _p, _q = _a.clickablePagination, clickablePagination = _q === void 0 ? true : _q;
+    var children = _a.children, customResponsives = _a.responsives, _b = _a.defaultItemsPerPage, defaultItemsPerPage = _b === void 0 ? 2 : _b, _c = _a.itemPaddingX, itemPaddingX = _c === void 0 ? 12 : _c, _d = _a.itemRatio, itemRatio = _d === void 0 ? "auto" : _d, _e = _a.alignItems, alignItems = _e === void 0 ? "center" : _e, _f = _a.containerPaddingX, containerPaddingX = _f === void 0 ? 55 : _f, _g = _a.containerPaddingY, containerPaddingY = _g === void 0 ? 20 : _g, _h = _a.autoSlide, autoSlide = _h === void 0 ? false : _h, _j = _a.autoSlideInterval, autoSlideInterval = _j === void 0 ? 3000 : _j, _k = _a.draggable, draggable = _k === void 0 ? true : _k, slideContainer = _a.slideContainer, _l = _a.color, color = _l === void 0 ? "gray" : _l, _m = _a.navSize, navSize = _m === void 0 ? 40 : _m, _o = _a.navBackground, navBackground = _o === void 0 ? "none" : _o, _p = _a.navOpacity, navOpacity = _p === void 0 ? 1 : _p, _q = _a.pagination, pagination = _q === void 0 ? true : _q, _r = _a.clickablePagination, clickablePagination = _r === void 0 ? true : _r;
     var itemCount = useMemo(function () { return children.length; }, [children.length]);
     var slideRef = useRef(null);
-    var _r = useState(autoSlide), activeAutoSlide = _r[0], setActiveAutoSlide = _r[1];
-    var _s = useState(false), dragging = _s[0], setDragging = _s[1];
-    var _t = useState(false), blockLink = _t[0], setBlockLink = _t[1];
-    var _u = useState(0), slidePage = _u[0], setSlidePage = _u[1];
-    var _v = useState(200), slideItemWidth = _v[0], setSlideItemWidth = _v[1];
-    var _w = useState(Math.ceil(children.length / defaultItemsPerPage)), itemsPerPage = _w[0], setItemsPerPage = _w[1];
-    var _x = useState(3), maxPage = _x[0], setMaxPage = _x[1];
-    var _y = useState(null), container = _y[0], setContainer = _y[1];
-    var _z = useState(customResponsives), responsives = _z[0], setResponsives = _z[1];
+    var _s = useState(autoSlide), activeAutoSlide = _s[0], setActiveAutoSlide = _s[1];
+    var _t = useState(false), dragging = _t[0], setDragging = _t[1];
+    var _u = useState(false), blockLink = _u[0], setBlockLink = _u[1];
+    var _v = useState(0), slidePage = _v[0], setSlidePage = _v[1];
+    var _w = useState(200), slideItemWidth = _w[0], setSlideItemWidth = _w[1];
+    var _x = useState(Math.ceil(children.length / defaultItemsPerPage)), itemsPerPage = _x[0], setItemsPerPage = _x[1];
+    var _y = useState(3), maxPage = _y[0], setMaxPage = _y[1];
+    var _z = useState(null), container = _z[0], setContainer = _z[1];
+    var _0 = useState(customResponsives), responsives = _0[0], setResponsives = _0[1];
     // 컨테이너 체크
     useEffect(function () {
         var isHTMLElementRef = function (ref) {
@@ -323,11 +323,11 @@ var Slide = function (_a) {
                     alignItems: alignItems,
                     transition: !dragging ? "all 0.5s" : "none",
                     marginBottom: pagination ? "32px" : "",
-                } }, { children: [children.map(function (child, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX, blockLink: blockLink }, { children: child }), i)); }), Array(maxPage % itemsPerPage === 0
+                } }, { children: [children.map(function (child, i) { return (_jsx(SlideItem, __assign({ itemWidth: slideItemWidth, paddingX: itemPaddingX, blockLink: blockLink, itemRatio: itemRatio }, { children: child }), i)); }), Array(maxPage % itemsPerPage === 0
                         ? 0
                         : itemsPerPage - (children.length % itemsPerPage))
                         .fill(0)
-                        .map(function (el, i) { return (_jsx(SlideItem, __assign({ slideItemWidth: slideItemWidth, paddingX: itemPaddingX, blockLink: blockLink }, { children: _jsx("div", { style: {
+                        .map(function (el, i) { return (_jsx(SlideItem, __assign({ itemWidth: slideItemWidth, itemRatio: itemRatio, paddingX: itemPaddingX, blockLink: blockLink }, { children: _jsx("div", { style: {
                                 pointerEvents: blockLink ? "none" : "all",
                             } }) }), i)); })] })), pagination && (_jsx("div", __assign({ className: "pagination", style: { bottom: 0 + containerPaddingY } }, { children: paginationGenerator() })))] })));
 };

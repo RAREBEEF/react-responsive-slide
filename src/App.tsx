@@ -57,6 +57,7 @@ function App() {
           // ]}
           defaultItemsPerPage={2}
           itemPaddingX={20}
+          itemRatio="4/3"
           alignItems="center"
           containerPaddingX={55}
           containerPaddingY={100}
@@ -78,9 +79,30 @@ function App() {
           <div className="slide-item">6</div>
           <div className="slide-item">7</div>
           <div className="slide-item">8</div>
-          <div className="slide-item">9</div>
-          <div className="slide-item">10</div>
-          <div className="slide-item">11</div>
+          <a
+            href="https://github.com/RAREBEEF/react-responsive-slide"
+            target="_blank"
+            rel="noreferrer"
+            className="slide-item"
+          >
+            <img src="/images/npm-logo.png" alt="npm"></img>
+          </a>
+          <a
+            href="https://github.com/RAREBEEF/react-responsive-slide"
+            target="_blank"
+            rel="noreferrer"
+            className="slide-item"
+          >
+            <img src="/images/github-logo.svg" alt="github repository"></img>
+          </a>
+          <a
+            href="https://www.rarebeef.co.kr"
+            target="_blank"
+            rel="noreferrer"
+            className="slide-item"
+          >
+            <img src="/logo512.png" alt="dev homepage"></img>
+          </a>
         </Slide>
       </div>
     </div>

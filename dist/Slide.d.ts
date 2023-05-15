@@ -18,6 +18,8 @@ interface SlideProps {
     defaultItemsPerPage?: number;
     /**아이템 사이 여백*/
     itemPaddingX?: number;
+    /**아이템 사이 여백*/
+    itemRatio?: string;
     /**아이템 세로 정렬*/
     alignItems?: "center" | "start" | "end";
     /**컨테이너 좌우 여백*/

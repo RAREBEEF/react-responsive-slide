@@ -51,7 +51,7 @@ function App() {
 ```
 
 3. `<Slide>` 컴포넌트의 자식으로 슬라이드 아이템들을 넣어주면 구현 완료입니다.  
-   이제 컨테이너와 아이템의 스타일을 원하는대로 꾸며보세요.
+   `<Slide>`의 prop으로 슬라이드를 커스텀하거나 컨테이너와 아이템의 스타일을 선언하여 원하는대로 꾸며보세요.
 
 ```ts
 import { useRef } from "react";
@@ -86,6 +86,8 @@ function App() {
 구체적이고 다양하지는 않지만 어느정도 쓸만한 커스텀 기능을 갖고 있습니다.  
 다양한 파라미터를 `<Slide>` 컴포넌트에 전달하여 슬라이드를 커스텀할 수 있습니다.
 
+특히 `itemRatio`의 기본값은 `auto`지만 다양한 반응형 환경에서 아이템이 자연스러운 사이즈를 유지할 수 있도록 적당한 값을 적용하는 것이 좋습니다.
+
 ### **1. `responsives`**
 
 컨테이너의 사이즈에 맞춰 페이지당 슬라이드 아이템의 개수를 설정할 수 있습니다.  
@@ -115,11 +117,16 @@ defaultItemsPerPage={2}
 슬라이드 아이템 사이의 간격입니다. 단위는 px입니다.  
 기본값은 `12` 입니다.
 
+### **4. `itemRatio`**
+
+슬라이드 아이템의 가로세로 비율입니다. css aspect-ratio의 값을 사용됩니다.  
+기본값은 `auto` 입니다.
+
 ```ts
-itemPaddingX={12}
+itemRatio = "4/3";
 ```
 
-### **4. `alignItems`**
+### **5. `alignItems`**
 
 아이템들의 세로 정렬 기준입니다. 아이템들의 높이가 다를 때 컨테이너보다 높이가 작은 아이템의 정렬 위치를 정할 수 있습니다. 유효값은 `"center" | "start" | "end"` 입니다.  
 기본값은 `center` 입니다.
@@ -128,7 +135,7 @@ itemPaddingX={12}
 alignItems = "center";
 ```
 
-### **5. `containerPaddingX`**
+### **6. `containerPaddingX`**
 
 슬라이드 컨테이너의 좌우 여백입니다. 단위는 px입니다.  
 기본값은 `55` 입니다.
@@ -137,7 +144,7 @@ alignItems = "center";
 containerPaddingX={55}
 ```
 
-### **6. `containerPaddingY`**
+### **7. `containerPaddingY`**
 
 슬라이드 컨테이너의 상하 여백입니다. 단위는 px입니다.  
 기본값은 `20` 입니다.
@@ -146,7 +153,7 @@ containerPaddingX={55}
 containerPaddingY={20}
 ```
 
-### **7. `autoSlide`**
+### **8. `autoSlide`**
 
 슬라이드가 자동으로 움직일지 여부를 결정합니다.
 기본값은 `false` 입니다.
@@ -155,7 +162,7 @@ containerPaddingY={20}
 autoSlide={12}
 ```
 
-### **8. `autoSlideInterval`**
+### **9. `autoSlideInterval`**
 
 슬라이드가 자동으로 움직이는 시간 간격을 결정합니다. 단위는 ms입니다.  
 기본값은 `3000` 입니다.
@@ -164,7 +171,7 @@ autoSlide={12}
 autoSlideInterval={3000}
 ```
 
-### **9. `draggable`**
+### **10. `draggable`**
 
 터치와 드래그로 슬라이드를 이동할 수 있는지 여부를 결정합니다.  
 기본값은 `true` 입니다.
@@ -173,7 +180,7 @@ autoSlideInterval={3000}
 draggable={true}
 ```
 
-### **10. `color`**
+### **11. `color`**
 
 테마 색상입니다. 네비게이션과 페이지네이션의 색상을 결정합니다. css가 이해할 수 있는 모든 색상값을 지원합니다.  
 기본값은 `gray` 입니다.
@@ -182,7 +189,7 @@ draggable={true}
 color = "gray";
 ```
 
-### **11. `navSize`**
+### **12. `navSize`**
 
 네비게이션 버튼의 크기를 조절합니다. 단위는 px입니다.  
 기본값은 `40` 입니다.
@@ -191,7 +198,7 @@ color = "gray";
 navSize={40};
 ```
 
-### **11. `navBackground`**
+### **13. `navBackground`**
 
 네비게이션 버튼의 배경 색상을 설정합니다. css Background 값으로 사용됩니다. `none` 으로 배경을 없앨 수 있습니다.  
 기본값은 `none` 입니다.
@@ -200,7 +207,7 @@ navSize={40};
 navBackground = "white";
 ```
 
-### **12. `pagination`**
+### **14. `pagination`**
 
 페이지네이션을 표시할지 여부를 결정합니다.
 기본값은 `true` 입니다.
@@ -209,7 +216,7 @@ navBackground = "white";
 pagination={true};
 ```
 
-### **13. `clickablePagination`**
+### **15. `clickablePagination`**
 
 페이지네이션을 클릭하여 페이지를 이동할 수 있는지를 결정합니다.
 기본값은 `true` 입니다.
@@ -258,6 +265,7 @@ function App() {
           ]}
           defaultItemsPerPage={2}
           itemPaddingX={55}
+          itemRatio="4/3"
           alignItems="center"
           containerPaddingX={55}
           containerPaddingY={55}

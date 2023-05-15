@@ -37,7 +37,6 @@ header h1 {
   position: relative;
   padding: 35px;
   z-index: 1;
-  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -47,6 +46,16 @@ header h1 {
   color: white;
   font-weight: 700;
   font-size: 30px;
+  transition: all 0.3s;
+}
+
+.slide-item:hover {
+  translate: 0px -10px;
+}
+
+.slide-item > img {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .slide-item::before {

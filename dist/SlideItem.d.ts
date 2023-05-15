@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 interface SlideItemProps {
-    slideItemWidth: number;
+    itemWidth: number;
+    itemRatio: string;
     paddingX?: number;
     children: ReactElement;
     blockLink: boolean;

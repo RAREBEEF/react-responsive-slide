@@ -2,27 +2,32 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 
 interface SlideItemProps {
-  slideItemWidth: number;
+  itemWidth: number;
+  itemRatio: string;
   paddingX?: number;
   children: ReactElement;
   blockLink: boolean;
 }
 
 interface StyleProps {
-  slideItemWidth: number;
+  itemWidth: number;
+  itemRatio: string;
   paddingX: number;
   blockLink: boolean;
 }
 
 const SlideItem: React.FC<SlideItemProps> = ({
-  slideItemWidth,
+  itemWidth,
+  itemRatio,
   paddingX = 12,
   children,
   blockLink,
 }) => {
+  console.log(itemRatio);
   return (
     <StyledSlideItem
-      slideItemWidth={slideItemWidth}
+      itemWidth={itemWidth}
+      itemRatio={itemRatio}
       paddingX={paddingX}
       blockLink={blockLink}
     >
@@ -42,10 +47,13 @@ const StyledSlideItem = styled.li<StyleProps>`
     font-size: 100%;
     font: inherit;
     display: block;
-    width: ${({ slideItemWidth }) => slideItemWidth}px;
+    width: ${({ itemWidth }) => itemWidth}px;
     padding-left: ${({ paddingX }) => paddingX}px;
     padding-right: ${({ paddingX }) => paddingX}px;
     pointer-events: ${({ blockLink }) => (blockLink ? "none" : "all")};
+  }
+  & > * {
+    aspect-ratio: ${({ itemRatio }) => itemRatio};
   }
 `;
 

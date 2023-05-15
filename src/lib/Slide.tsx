@@ -31,6 +31,8 @@ interface SlideProps {
   defaultItemsPerPage?: number;
   /**아이템 사이 여백*/
   itemPaddingX?: number;
+  /**아이템 사이 여백*/
+  itemRatio?: string;
   /**아이템 세로 정렬*/
   alignItems?: "center" | "start" | "end";
   /**컨테이너 좌우 여백*/
@@ -62,6 +64,7 @@ const Slide: React.FC<SlideProps> = ({
   responsives: customResponsives,
   defaultItemsPerPage = 2,
   itemPaddingX = 12,
+  itemRatio = "auto",
   alignItems = "center",
   containerPaddingX = 55,
   containerPaddingY = 20,
@@ -475,9 +478,10 @@ const Slide: React.FC<SlideProps> = ({
         {children.map((child, i) => (
           <SlideItem
             key={i}
-            slideItemWidth={slideItemWidth}
+            itemWidth={slideItemWidth}
             paddingX={itemPaddingX}
             blockLink={blockLink}
+            itemRatio={itemRatio}
           >
             {child}
           </SlideItem>
@@ -491,7 +495,8 @@ const Slide: React.FC<SlideProps> = ({
           .map((el, i) => (
             <SlideItem
               key={i}
-              slideItemWidth={slideItemWidth}
+              itemWidth={slideItemWidth}
+              itemRatio={itemRatio}
               paddingX={itemPaddingX}
               blockLink={blockLink}
             >
